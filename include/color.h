@@ -1,7 +1,8 @@
 #ifndef GUARD_COLOR_H
 #define GUARD_COLOR_H
 
-#if PLATFORM_GBA || (RENDERER == RENDERER_SOFTWARE)
+// TODO: Full RGB in SA1
+#if PLATFORM_GBA || (GAME == GAME_SA1) || (RENDERER == RENDERER_SOFTWARE)
 // ABGR_1555
 typedef uint16_t ColorRaw;
 typedef union Color {
