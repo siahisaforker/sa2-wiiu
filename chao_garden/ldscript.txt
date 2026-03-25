@@ -238,7 +238,17 @@ SECTIONS {
 		build/mb_chao_garden/asm/code.o(.text);
 		build/mb_chao_garden/asm/m4a0.o(.text);
 		build/mb_chao_garden/src/m4a.o(.text);
-		build/mb_chao_garden/asm/libagbsyscall.o(.text);
+        *libagbsyscall.a:ArcTan2.o(.text);
+        *libagbsyscall.a:CpuFastSet.o(.text);
+        *libagbsyscall.a:CpuSet.o(.text);
+        *libagbsyscall.a:Div.o(.text);
+        *libagbsyscall.a:Mod.o(.text);
+        *libagbsyscall.a:LZ77UnCompVram.o(.text);
+        *libagbsyscall.a:LZ77UnCompWram.o(.text);
+        *libagbsyscall.a:ObjAffineSet.o(.text);
+        *libagbsyscall.a:Sqrt.o(.text);
+        *libagbsyscall.a:VBlankIntrWait.o(.text);
+        *libagbsyscall.a:SoftResetRom.o(.text);
 		build/mb_chao_garden/src/agb_flash.o(.text);
 		build/mb_chao_garden/src/agb_flash_512k.o(.text);
 		build/mb_chao_garden/src/agb_flash_le_512k.o(.text);

@@ -160,9 +160,9 @@ include songs.mk
 $(LDSCRIPT):
 	@$(CPP) $(CPPFLAGS) -P ldscript.txt -o $(LDSCRIPT)
 
-$(ELF): $(OBJS) $(LDSCRIPT)
+$(ELF): $(OBJS) $(LDSCRIPT) libagbsyscall
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
-	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../tools/agbcc/lib/libgcc.a ../tools/agbcc/lib/libc.a -o $@
+	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../tools/agbcc/lib/libgcc.a ../tools/agbcc/lib/libc.a -L../libagbsyscall/build/gba -lagbsyscall -o $@
 
 %.gba: %.elf
 	$(OBJCOPY) -O binary $< $@
@@ -205,6 +205,9 @@ $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -I sound -o $@ $<"
 	@$(AS) $(ASFLAGS) -I sound -o $@ $<
+
+libagbsyscall:
+	@$(MAKE) -C ../libagbsyscall MODERN=0 PLATFORM=gba CPU_ARCH=arm
 
 CONTEXT_FLAGS := -DM2C -DPLATFORM_GBA=1 -DGEN_CTX=1 -Dsize_t=int -D "offsetof(TYPE, MEMBER)"="((size_t)&((TYPE *)0)->MEMBER)"
 
