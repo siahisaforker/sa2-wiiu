@@ -587,6 +587,7 @@ END_NONMATCH
 #ifndef COLLECT_RINGS_ROM
 void Task_CreateMultiplayerPlayer(void)
 #else
+// (99.96%) https://decomp.me/scratch/FsFTy
 NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPlayer__CollectRings.inc",
          void Task_CreateMultiplayerPlayer(void))
 #endif
@@ -638,6 +639,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             mpp->unk68 = Q(mpp->unk48);
         }
 
+#ifndef COLLECT_RINGS_ROM
         {
             val = recv->pat4.unkA & ~mpp->unk57;
             if (SIO_MULTI_CNT->id == mpp->unk56) {
@@ -649,7 +651,15 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                 }
             }
         }
+#endif
+#if COLLECT_RINGS_ROM && !defined(NON_MATCHING)
+        ({
+            u8 *unk57 = &mpp->unk57;
+            *unk57 = recv->pat4.unkA;
+        });
+#else
         mpp->unk57 = recv->pat4.unkA;
+#endif
         // TODO: not pat4
         mpp->unk54 = recv->pat4.unk8;
 
@@ -683,7 +693,63 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                 }
             }
         }
+#if COLLECT_RINGS_ROM
+        if (SIO_MULTI_CNT->id == mpp->unk56) {
+            gMultiplayerCharRings[mpp->unk56] = I(recv->pat4.unk6);
+            anim = (u8)recv->pat4.unk6;
+            temp = (recv->pat4.unkB & 0xF);
+            if (s->graphics.anim != anim || s->variant != temp) {
+                s->hitboxes[0].index = -1;
+                s->hitboxes[1].index = -1;
+            }
+            mpp->unk6A = anim;
+            s->graphics.anim = anim;
+            s->variant = temp;
+        } else {
 
+            u16 prevAnim;
+            gMultiplayerCharRings[mpp->unk56] = I(recv->pat4.unk6);
+            anim = (u8)recv->pat4.unk6;
+            mpp->unk6A = anim;
+            prevAnim = s->graphics.anim;
+            switch (anim) { /* irregular */
+                case 2:
+                    s->graphics.anim = gUnknown_02015B18[mpp->unk56] + 1;
+                    break;
+                case 3:
+                case 4:
+                case 10:
+                case 11:
+                    s->graphics.anim = gUnknown_02015B18[mpp->unk56] + 3;
+                    break;
+                case 9:
+                    s->graphics.anim = gUnknown_02015B18[mpp->unk56] + 2;
+                    break;
+                case 55:
+                    s->graphics.anim = gUnknown_02015B18[mpp->unk56] + 2;
+                    s->prevAnim = -1;
+
+                    break;
+                default:
+                    s->graphics.anim = gUnknown_02015B18[mpp->unk56];
+                    break;
+            }
+
+#ifndef NON_MATCHING
+            if (prevAnim != ({
+                    register u16 r3 asm("r3") = s->graphics.anim;
+                    r3;
+                }))
+#else
+            if (prevAnim != s->graphics.anim)
+#endif
+            {
+                s->hitboxes[0].index = -1;
+                s->hitboxes[1].index = -1;
+            }
+            s->variant = 0;
+        }
+#else
         if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
             // TODO: make a new pat
             anim = (u8)recv->pat4.unk6;
@@ -714,10 +780,18 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
 
         s->graphics.anim = anim;
         s->variant = temp;
+#endif
+#if defined(COLLECT_RINGS_ROM) && !defined(NON_MATCHING)
+        {
+            register struct MultiSioData_0_4 *r4 asm("r4") = &recv->pat4;
+            asm("" ::"r"(r4));
+            mpp->unk58[0] = r4->unkB >> 4;
+        }
+#else
         mpp->unk58[0] = recv->pat4.unkB >> 4;
+#endif
         s->animSpeed = recv->pat4.unkC;
         transform->rotation = recv->pat4.unkD << 2;
-
     } else {
         // Warning: type changed on the struct
         mpp->pos.x += I(mpp->unk66);
@@ -729,7 +803,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             PAUSE_BACKGROUNDS_QUEUE();
             gBgSpritesCount = 0;
             PAUSE_GRAPHICS_QUEUE();
-#ifndef NON_MATCHING
+#if !defined(COLLECT_RINGS_ROM) && !defined(NON_MATCHING)
             // NOTE: LinkCommunicationError() does NOT take any arguments
             *(volatile u8 *)&gGameMode;
 #endif
@@ -760,6 +834,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
     }
     UpdateSpriteAnimation(s);
 
+#ifndef COLLECT_RINGS_ROM
     if (gGameMode == GAME_MODE_TEAM_PLAY && gMultiplayerRanks[SIO_MULTI_CNT->id] == -1) {
         u8 someBool = TRUE;
         for (i = 0; i < 4; i++) {
@@ -780,9 +855,11 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             ((RoomEvent *)CreateRoomEvent())->type = 7;
         }
     }
+#endif
 
     if (!(gStageFlags & 1) && !(mpp->unk54 & 0x4) && !(mpp->unk57 & 0x80) && !(gPlayer.itemEffect & 0x80) && !(mpp->unk5C & 1)
         && (gPlayer.timerInvulnerability == 0) && !(gPlayer.moveState & (MOVESTATE_IA_OVERRIDE | MOVESTATE_DEAD))) {
+#ifndef COLLECT_RINGS_ROM
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
             if (mpp->unk56 != SIO_MULTI_CNT->id) {
                 switch (gMultiplayerCharacters[mpp->unk56]) {
@@ -801,13 +878,16 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                         break;
                 }
             }
-        } else {
+        } else
+#endif
+        {
             if (mpp->unk56 != SIO_MULTI_CNT->id) {
                 sub_8018120();
             }
         }
     } else if ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__TELEPORT) || (mpp->unk57 & 0x80) || gPlayer.timerInvulnerability != 0
                || !PLAYER_IS_ALIVE || gMultiplayerRanks[mpp->unk56] != -1) {
+#ifndef COLLECT_RINGS_ROM
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
             if (mpp->unk56 != SIO_MULTI_CNT->id) {
                 switch (gMultiplayerCharacters[mpp->unk56]) {
@@ -833,7 +913,9 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                 gPlayer.moveState |= MOVESTATE_IN_AIR;
                 mpp->unk60 = 30;
             }
-        } else {
+        } else
+#endif
+        {
             if (gPlayer.moveState & MOVESTATE_STOOD_ON_OBJ && gPlayer.stoodObj == s) {
                 gPlayer.moveState &= ~MOVESTATE_STOOD_ON_OBJ;
                 gPlayer.moveState |= MOVESTATE_IN_AIR;
@@ -908,12 +990,12 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             }
         }
     }
-
+#ifndef COLLECT_RINGS_ROM
     if (gShouldSpawnMPAttackEffect != 0) {
         CreateMPAttackEffect();
         gShouldSpawnMPAttackEffect = 0;
     }
-
+#endif
     if (gShouldSpawnMPAttack2Effect != 0) {
         CreateMPAttack2Effect();
         gShouldSpawnMPAttack2Effect = 0;
