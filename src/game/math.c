@@ -336,7 +336,7 @@ void sub_8084A24(UNK_8085D14 *arg0, u16 arg1, UNK_8085D14 *arg2)
     s32 *r1;
     u8 i;
 
-    r1 = (u32 *)arg0;
+    r1 = (s32 *)arg0;
     for (i = 0; i < sizeof(UNK_8085D14); i += 4) {
         *r1++ = 0;
     };
