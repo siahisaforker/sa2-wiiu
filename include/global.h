@@ -279,6 +279,14 @@ typedef void (*VoidFn)(void);
     b ^= (u8)a;                                                                                                                            \
     a = ((u8)b ^ (u8)a);
 
+#define XOR_SWAP_2(a, b)                                                                                                                   \
+    ({                                                                                                                                     \
+        u16 x = a ^ b;                                                                                                                     \
+        u16 y = a ^ b ^ b;                                                                                                                 \
+        b = y;                                                                                                                             \
+        a = x ^ y;                                                                                                                         \
+    })
+
 // TODO: fix casts here
 #define SWAP_AND_NEGATE(a, b)                                                                                                              \
     a ^= (u8)b;                                                                                                                            \
