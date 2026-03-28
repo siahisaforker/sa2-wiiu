@@ -20,7 +20,7 @@ SECTIONS {
         src/sa2/malloc_ewram.o(.text);
         src/sa2/malloc_vram.o(.text);
         src/sa2/multi_sio.o(.text);
-        src/multi_boot.o(.text);
+        src/sa2/multi_boot.o(.text);
         src/sa2/sio32_multi_load.o(.text);
 
         /* Game */
@@ -128,7 +128,7 @@ SECTIONS {
         src/game/stage/underwater_effects.o(.text);
         src/game/water_effects.o(.text);
         src/game/stage/screen_shake.o(.text);
-        src/input_recorder.o(.text);
+        src/sa2/input_recorder.o(.text);
         src/game/some_task_manager.o(.text);
         src/game/interactables/half_pipe.o(.text);
         src/game/interactables/034.o(.text);

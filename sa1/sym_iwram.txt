@@ -3,7 +3,7 @@
 src/sa2/lib/m4a/m4a.o(.bss.code);
 
 . = 0x0000400;
-src/multi_boot.o(.bss);
+src/sa2/multi_boot.o(.bss);
 src/game/stage/terrain_collision.o(.bss);
 
 . = 0x00000424;
@@ -69,7 +69,7 @@ src/game/stage/underwater_effects.o(.data);
 src/game/water_effects.o(.data);
 
 . = 0x000060D0;
-src/input_recorder.o(.data);
+src/sa2/input_recorder.o(.data);
 src/game/stage/player_controls.o(.data);
 src/game/some_task_manager.o(.data);
 src/game/enemies/boss_xtra_super_egg_robot.o(.data);

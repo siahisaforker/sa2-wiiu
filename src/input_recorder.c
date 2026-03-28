@@ -4,6 +4,10 @@
 #include "malloc_ewram.h"
 #include "input_recorder.h"
 
+// TODO: Move input recorder into sa1_sa2_shared
+// It seems input recorder implementation is not infact
+// part of the engine, and instead part of the sa1 game codebase
+
 #if TAS_TESTING
 #if PORTABLE
 #include <stdio.h>

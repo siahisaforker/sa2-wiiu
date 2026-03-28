@@ -187,6 +187,7 @@ SA2_C_FILES := \
 	sa2/lib/m4a/m4a_tables.c \
 	sa2/multi_sio.c \
 	sa2/sio32_multi_load.c \
+	sa2/multi_boot.c \
 	sa2/core.c \
 	sa2/main.c \
 	sa2/task.c \
@@ -195,8 +196,8 @@ SA2_C_FILES := \
 	sa2/malloc_vram.c \
 	sa2/malloc_ewram.c \
 	sa2/bg_triangles.c \
+	sa2/input_recorder.c \
 # 	sa2/background.c \
-# 	sa2/bg_triangles.c \
 
 SA2_C_ASM_FILES := \
 # 	sa2/rom_header.s \
