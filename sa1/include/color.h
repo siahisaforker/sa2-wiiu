@@ -33,7 +33,7 @@ typedef union Color {
 
 // NOTE: RGB16() is used in SA1 in some places for matching,
 //       so we can't have one single macro. :(
-#define RGB16(r, g, b) ((r) | ((g) << 5) | ((b) << 10))
+#define RGB16(r, g, b)     ((r) | ((g) << 5) | ((b) << 10))
 #define RGB16_REV(r, g, b) (((b) << 10) | ((g) << 5) | (r))
 
 #define RGB_BLACK      RGB16_REV(0, 0, 0)
