@@ -386,7 +386,7 @@ clean: tidy clean-tools
 #	@$(MAKE) clean -C multi_boot/subgame_bootstrap
 #	@$(MAKE) clean -C multi_boot/programs/subgame_loader
 #	@$(MAKE) clean -C multi_boot/collect_rings
-	@$(MAKE) clean -C libagbsyscall PLATFORM=$(PLATFORM) CPU_ARCH=$(CPU_ARCH)
+	@$(MAKE) clean -C ../libagbsyscall PLATFORM=$(PLATFORM) CPU_ARCH=$(CPU_ARCH)
 
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
 	find . \( -iwholename './data/maps/*/*/entities/*.bin' -o -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
@@ -413,7 +413,7 @@ win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 #### RECIPES ####
 
 include songs.mk
-include graphics.mk
+include ../graphics.mk
 
 %.s: ;
 %.png: ;

@@ -1,4 +1,3 @@
-// Would be good to understand why this path assumes the root is src rather than this directory
 #include "../data/maps/zone_1/act_1/tilemaps/fg/header.c"
 #include "../data/maps/zone_1/act_2/tilemaps/fg/header.c"
 #include "../data/maps/zone_2/act_1/tilemaps/fg/header.c"
