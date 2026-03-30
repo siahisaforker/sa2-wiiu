@@ -544,7 +544,7 @@ void Task_ChaoMessageInit(void)
 
         s = &msgSprite->s;
         s->graphics.dest = VramMalloc(26);
-        if (gLoadedSaveGame.uiLanguage == UILANG_JAPANESE) {
+        if (LOADED_SAVE->uiLanguage == UILANG_JAPANESE) {
             s->graphics.anim = SA1_ANIM_MP_PLAYER_MSG_JP;
         } else {
             s->graphics.anim = SA1_ANIM_MP_PLAYER_MSG_EN;

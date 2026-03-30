@@ -167,7 +167,7 @@ void CreateEmptySaveGame(void)
 {
     u32 i;
 
-    DmaFill32(3, 0, &gLoadedSaveGame, sizeof(gLoadedSaveGame));
+    DmaFill32(3, 0, LOADED_SAVE, sizeof(*LOADED_SAVE));
     LOADED_SAVE->unk4 = 0;
     LOADED_SAVE->unk420 = 50000;
     LOADED_SAVE->difficultyLevel = DIFFICULTY_NORMAL;

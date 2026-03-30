@@ -104,12 +104,12 @@ void CreateMissingChaosEmaraldsCutScene(void)
     scene->unkBD = 0;
     scene->unkBF = 0xFF;
     scene->unkBE = 0;
-    scene->unkBF = gLoadedSaveGame->language;
+    scene->unkBF = LOADED_SAVE->language;
 
-    if (gLoadedSaveGame->chaosEmeralds[gSelectedCharacter] & CHAOS_EMERALDS_COMPLETED) {
+    if (LOADED_SAVE->chaosEmeralds[gSelectedCharacter] & CHAOS_EMERALDS_COMPLETED) {
         scene->unkBC = 1;
         for (i = 0; i < 4; i++) {
-            if (gLoadedSaveGame->completedCharacters[i]) {
+            if (LOADED_SAVE->completedCharacters[i]) {
                 scene->unkBD++;
             }
         }

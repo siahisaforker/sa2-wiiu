@@ -98,7 +98,7 @@ void sa2__sub_80818B8(void)
     if (gMultiSioStatusFlags & 0x10) {
         modeSelect->unk202 = 1;
     }
-    gMultiSioSend.pat2.unk0 = gLoadedSaveGame.uiLanguage;
+    gMultiSioSend.pat2.unk0 = LOADED_SAVE->uiLanguage;
     gMultiSioStatusFlags = MultiSioMain(&gMultiSioSend, gMultiSioRecv, modeSelect->unk202);
     if (modeSelect->unk205 == 0) {
         MultiSioStart();

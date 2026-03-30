@@ -275,7 +275,7 @@ void Task_StageUIMain(void)
                 }
             }
 
-            if ((!gLoadedSaveGame->timeLimitDisabled) && (gCourseTime >= TIME(9, 40)) && (Mod(gCourseTime, 60) == 0)) {
+            if ((!LOADED_SAVE->timeLimitDisabled) && (gCourseTime >= TIME(9, 40)) && (Mod(gCourseTime, 60) == 0)) {
                 m4aSongNumStart(SE_TIMER);
             }
 

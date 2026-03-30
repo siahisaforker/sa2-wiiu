@@ -201,7 +201,7 @@ static s32 sub_802B8A8(struct SuperSonic *sonic)
     s32 zero = 0;
 
     if (!(sonic->flags & SUPER_FLAG__10) && !(gStageFlags & STAGE_FLAG__100)) {
-        if (gCourseTime >= MAX_COURSE_TIME && !gLoadedSaveGame->timeLimitDisabled) {
+        if (gCourseTime >= MAX_COURSE_TIME && !LOADED_SAVE->timeLimitDisabled) {
             gPlayer.moveState = MOVESTATE_DEAD;
 
             sonic->func24 = sub_802C8EC;

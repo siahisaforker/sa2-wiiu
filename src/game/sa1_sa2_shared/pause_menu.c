@@ -48,7 +48,7 @@ void TaskDestructor_PauseMenu(struct Task *);
 
 void CreatePauseMenu(void)
 {
-    s8 lang = gLoadedSaveGame->language - 1;
+    s8 lang = LOADED_SAVE->language - 1;
 
     if (lang < LANG_DEFAULT)
         lang = LANG_JAPANESE - 1;

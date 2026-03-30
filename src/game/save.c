@@ -105,50 +105,50 @@ void InsertMultiplayerProfile(u32 playerId, u16 *name)
     s16 i, j;
 
     for (i = 0; i < 10; i++) {
-        struct MultiplayerScore *score = &gLoadedSaveGame->multiplayerScores[i];
+        struct MultiplayerScore *score = &LOADED_SAVE->multiplayerScores[i];
         if (playerId == score->playerId && StringEquals(name, score->playerName, MAX_PLAYER_NAME_LENGTH)) {
             struct MultiplayerScore scoreCopy;
             memcpy(&scoreCopy, score, sizeof(struct MultiplayerScore));
 
             for (j = i; j > 0; j--) {
-                gLoadedSaveGame->multiplayerScores[j] = gLoadedSaveGame->multiplayerScores[j - 1];
+                LOADED_SAVE->multiplayerScores[j] = LOADED_SAVE->multiplayerScores[j - 1];
             }
-            memcpy(&gLoadedSaveGame->multiplayerScores[0], &scoreCopy, sizeof(struct MultiplayerScore));
+            memcpy(&LOADED_SAVE->multiplayerScores[0], &scoreCopy, sizeof(struct MultiplayerScore));
             return;
         }
     }
 
     // otherwise, insert the score at the beginning
     for (i = 9; i > 0; i--) {
-        gLoadedSaveGame->multiplayerScores[i] = gLoadedSaveGame->multiplayerScores[i - 1];
+        LOADED_SAVE->multiplayerScores[i] = LOADED_SAVE->multiplayerScores[i - 1];
     }
 
-    gLoadedSaveGame->multiplayerScores[0].playerId = playerId;
+    LOADED_SAVE->multiplayerScores[0].playerId = playerId;
     for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
-        gLoadedSaveGame->multiplayerScores[0].playerName[i] = name[i];
+        LOADED_SAVE->multiplayerScores[0].playerName[i] = name[i];
     }
-    gLoadedSaveGame->multiplayerScores[0].slotFilled = TRUE;
-    gLoadedSaveGame->multiplayerScores[0].wins = 0;
-    gLoadedSaveGame->multiplayerScores[0].losses = 0;
-    gLoadedSaveGame->multiplayerScores[0].draws = 0;
+    LOADED_SAVE->multiplayerScores[0].slotFilled = TRUE;
+    LOADED_SAVE->multiplayerScores[0].wins = 0;
+    LOADED_SAVE->multiplayerScores[0].losses = 0;
+    LOADED_SAVE->multiplayerScores[0].draws = 0;
 }
 
 void RecordOwnMultiplayerResult(s16 result)
 {
     switch (result) {
         case MULTIPLAYER_RESULT_WIN:
-            if (gLoadedSaveGame->multiplayerWins < MAX_MULTIPLAYER_SCORE) {
-                gLoadedSaveGame->multiplayerWins++;
+            if (LOADED_SAVE->multiplayerWins < MAX_MULTIPLAYER_SCORE) {
+                LOADED_SAVE->multiplayerWins++;
             }
             break;
         case MULTIPLAYER_RESULT_LOSS:
-            if (gLoadedSaveGame->multiplayerLoses < MAX_MULTIPLAYER_SCORE) {
-                gLoadedSaveGame->multiplayerLoses++;
+            if (LOADED_SAVE->multiplayerLoses < MAX_MULTIPLAYER_SCORE) {
+                LOADED_SAVE->multiplayerLoses++;
             }
             break;
         case MULTIPLAYER_RESULT_DRAW:
-            if (gLoadedSaveGame->multiplayerDraws < MAX_MULTIPLAYER_SCORE) {
-                gLoadedSaveGame->multiplayerDraws++;
+            if (LOADED_SAVE->multiplayerDraws < MAX_MULTIPLAYER_SCORE) {
+                LOADED_SAVE->multiplayerDraws++;
             }
             break;
     }
@@ -159,7 +159,7 @@ void RecordMultiplayerResult(u32 id, u16 *name, s16 result)
     s16 i;
 
     for (i = 0; i < NUM_MULTIPLAYER_SCORES; i++) {
-        struct MultiplayerScore *score = &gLoadedSaveGame->multiplayerScores[i];
+        struct MultiplayerScore *score = &LOADED_SAVE->multiplayerScores[i];
         if (id == score->playerId && StringEquals(name, score->playerName, MAX_PLAYER_NAME_LENGTH)) {
             switch (result) {
                 case MULTIPLAYER_RESULT_WIN:
@@ -287,7 +287,7 @@ static s16 TryWriteSaveGame(void)
     struct SaveGame *lastWrittenGameState, *gameState;
     struct SaveSectorData *save;
 
-    gameState = gLoadedSaveGame;
+    gameState = LOADED_SAVE;
     lastWrittenGameState = gLastWrittenSaveGame;
     save = gSaveSectorDataBuffer;
 
@@ -541,7 +541,7 @@ static bool16 TryLoadLatestSaveGame(void)
     struct SaveGame *lastSavedData, *gameState;
     struct SaveSectorData *save;
 
-    gameState = gLoadedSaveGame;
+    gameState = LOADED_SAVE;
     lastSavedData = gLastWrittenSaveGame;
     save = gSaveSectorDataBuffer;
 
@@ -760,7 +760,7 @@ static s16 CreateAndTryWriteNewSaveGame(void)
     s16 i;
     u16 flashError;
 
-    struct SaveGame *gameState = gLoadedSaveGame;
+    struct SaveGame *gameState = LOADED_SAVE;
     struct SaveGame *lastWrittenGameState = gLastWrittenSaveGame;
     struct SaveSectorData *save = gSaveSectorDataBuffer;
 
@@ -871,12 +871,12 @@ static void GenerateCompletedSaveGame(struct SaveGame *gameState)
 
 void SaveInit(void)
 {
-    gLoadedSaveGame = EwramMalloc(sizeof(struct SaveGame));
+    LOADED_SAVE = EwramMalloc(sizeof(struct SaveGame));
     gLastWrittenSaveGame = EwramMalloc(sizeof(struct SaveGame));
     gSaveSectorDataBuffer = EwramMalloc(sizeof(struct SaveSectorData));
 
     // Why not just generate for 1 and copy...
-    GenerateNewSaveGame(gLoadedSaveGame);
+    GenerateNewSaveGame(LOADED_SAVE);
     GenerateNewSaveGame(gLastWrittenSaveGame);
     InitSaveGameSectorData(gSaveSectorDataBuffer);
 }
@@ -908,7 +908,7 @@ s16 LoadSaveGame(void) { return TryLoadLatestSaveGame(); }
 
 bool32 WriteSaveGame(void)
 {
-    if (!HasChangesToSave() && gLoadedSaveGame->id) {
+    if (!HasChangesToSave() && LOADED_SAVE->id) {
         return TRUE;
     } else {
         return TryWriteSaveGame();
@@ -918,14 +918,14 @@ bool32 WriteSaveGame(void)
 s16 NewSaveGame(void) { return CreateAndTryWriteNewSaveGame(); }
 
 // Initialise a completed game state
-void LoadCompletedSaveGame(void) { GenerateCompletedSaveGame(gLoadedSaveGame); }
+void LoadCompletedSaveGame(void) { GenerateCompletedSaveGame(LOADED_SAVE); }
 
 // End of exported functions
 
 // Check if we need to save any changes
 static bool16 HasChangesToSave(void)
 {
-    u16 *pCurrent = (u16 *)gLoadedSaveGame;
+    u16 *pCurrent = (u16 *)LOADED_SAVE;
     u16 *pSaved = (u16 *)gLastWrittenSaveGame;
 
     s16 i = 0;

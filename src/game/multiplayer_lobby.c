@@ -117,7 +117,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     Sprite *s;
     Background *background;
     ScreenFade *fade;
-    s8 lang = gLoadedSaveGame->language - 1;
+    s8 lang = LOADED_SAVE->language - 1;
 
     if (lang < 0) {
         lang = 0;

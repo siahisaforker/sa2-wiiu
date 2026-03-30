@@ -77,7 +77,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     void *vram;
     u8 i;
 
-    lang = gLoadedSaveGame->language;
+    lang = LOADED_SAVE->language;
     if (lang > NUM_LANGUAGES) {
 #ifdef JAPAN
         lang = LANG_DEFAULT;

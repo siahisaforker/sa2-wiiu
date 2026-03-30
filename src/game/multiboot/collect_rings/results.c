@@ -102,7 +102,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     gRefSpriteTables = (const struct SpriteTables *)(EWRAM_START + 0x20000);
     gMultiplayerLanguage = 0;
 #else
-    gMultiplayerLanguage = gLoadedSaveGame->language;
+    gMultiplayerLanguage = LOADED_SAVE->language;
 #endif
 
     sub_8081FB0();

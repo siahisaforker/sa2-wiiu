@@ -325,7 +325,7 @@ void UpdateRingCounters(void)
 static void HandlePaused(struct SpecialStageUI *ui)
 {
     Sprite *s = &ui->pauseMenu;
-    s16 lang = LanguageIndex(gLoadedSaveGame->language);
+    s16 lang = LanguageIndex(LOADED_SAVE->language);
 
     const u16 pauseMenuVariants[][3] = {
         { 40, SA2_ANIM_PAUSE_MENU_JP, 0 }, { 40, SA2_ANIM_PAUSE_MENU_EN, 0 }, { 40, SA2_ANIM_PAUSE_MENU_DE, 0 },
@@ -352,7 +352,7 @@ static void SpecialStageResultsScreenCreateUI(struct SpecialStageResultsScreen *
     s16 d = DISPLAY_CENTER_X + 38, e = DISPLAY_CENTER_X + 38, f = DISPLAY_CENTER_X + 38;
     s16 i;
 
-    u8 chaosEmeralds = gLoadedSaveGame->chaosEmeralds[stage->character];
+    u8 chaosEmeralds = LOADED_SAVE->chaosEmeralds[stage->character];
     u8 character = stage->character;
 
     gSpecialStageVramPointer = stage->screenVram;

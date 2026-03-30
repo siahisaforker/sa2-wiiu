@@ -62,9 +62,9 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
     scene->unk54 = 0x96;
     scene->unk50 = 0;
 
-    if (scene->creditsVariant == CREDITS_VARIANT_FINAL_ENDING && gLoadedSaveGame->completedCharacters[CHARACTER_AMY]) {
+    if (scene->creditsVariant == CREDITS_VARIANT_FINAL_ENDING && LOADED_SAVE->completedCharacters[CHARACTER_AMY]) {
         scene->unk4D = 1;
-    } else if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING && gLoadedSaveGame->extraEndingCreditsPlayed) {
+    } else if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING && LOADED_SAVE->extraEndingCreditsPlayed) {
         scene->unk4D = 2;
     } else {
         scene->unk4D = 0;

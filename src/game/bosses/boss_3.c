@@ -388,7 +388,7 @@ void CreateEggTotem(void)
 
     // Tails captured animation
     if (!IS_FINAL_STAGE(gCurrentLevel) && gSelectedCharacter == CHARACTER_SONIC
-        && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
+        && LOADED_SAVE->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
         // __tails_kidnap
         s = &totem->sprTails;
         s->x = 0;
