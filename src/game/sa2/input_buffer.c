@@ -1,20 +1,21 @@
 #include "global.h"
 #include "game/globals.h"
-#include "game/sa1_sa2_shared/input_buffer.h"
+#include "game/sa2/input_buffer.h"
 #include "game/sa1_sa2_shared/player.h"
 
-#include "constants/characters.h"
+#include "data/input_combos.h"
+
+UNUSED u32 unused_030055C0[4] = {};
+
+u8 gFrameInputsBuf[4] = {};
+u8 gNewInputCountersIndex = 0;
+u8 ALIGNED(4) gFrameInputsBufIndex = 0;
+
+// Fills available space, but size not yet confirmed
+struct InputCounters ALIGNED(8) gNewInputCounters[32] = {};
 
 // Trick input patterns
-
-// In the original rom this data was somehow transferred to `music_manager.c` and the pointer
-// referenced from there. However, this data definitely relates to this file and in advance 2
-// the `gUnkMusicMgrData` is never used
-#ifndef NON_MATCHING
-extern const u8 gUnkMusicMgrData[];
-#else
-static const u8 pat1[] = { 0x04, 0x01, 0x00, 0xF0, 0x08, 0x10, 0xF0, 0x08, 0x00, 0xF0, 0x08, 0x10, 0xF0, 0x01 };
-#endif
+const u8 gUnknown_080D5254[] = { 0x04, 0x01, 0x00, 0xF0, 0x08, 0x10, 0xF0, 0x08, 0x00, 0xF0, 0x08, 0x10, 0xF0, 0x01 };
 const u8 gUnknown_080D5262[] = {
     0x04, // r6
     0x01, // r8
@@ -33,26 +34,6 @@ const u8 gUnknown_080D52A8[] = { 0x04, 0x01, 0x10, 0xF0, 0x0F, 0x00, 0xF0, 0x0F,
 const u8 gUnknown_080D52B6[] = { 0x04, 0x02, 0x10, 0xF0, 0x0F, 0x00, 0xF0, 0x0F, 0x10, 0xF0, 0x0F, 0x03, 0x07, 0x0F };
 const u8 gUnknown_080D52C4[] = { 0x04, 0x01, 0x10, 0xF0, 0x0F, 0x00, 0xF0, 0x0F, 0x10, 0xF0, 0x0F, 0x03, 0x07, 0x0F };
 const u8 gUnknown_080D52D2[] = { 0x04, 0x02, 0x10, 0xF0, 0x0F, 0x00, 0xF0, 0x0F, 0x10, 0xF0, 0x0F, 0x03, 0x07, 0x0F };
-
-const u8 *gUnknown_08c87098_unused[64] = { 0 };
-
-#ifndef NON_MATCHING
-const u8 *unk_8C87198[3] = { gUnkMusicMgrData, gUnknown_080D5262, INPUTBUF_NULL_PTR };
-#else
-const u8 *unk_8C87198[3] = { pat1, gUnknown_080D5262, INPUTBUF_NULL_PTR };
-#endif
-
-const u8 *unk_8C871A4[3] = { gUnknown_080D5270, gUnknown_080D527E, INPUTBUF_NULL_PTR };
-
-const u8 *unk_8C871B0[3] = { gUnknown_080D528C, gUnknown_080D529A, INPUTBUF_NULL_PTR };
-
-const u8 *unk_8C871BC[3] = { gUnknown_080D52A8, gUnknown_080D52B6, INPUTBUF_NULL_PTR };
-
-const u8 *unk_8C871C8[3] = { gUnknown_080D52C4, gUnknown_080D52D2, INPUTBUF_NULL_PTR };
-
-const u8 **gUnknown_08C871D4[NUM_CHARACTERS] = {
-    unk_8C87198, unk_8C871A4, unk_8C871B0, unk_8C871BC, unk_8C871C8,
-};
 
 // The current value in gNewInputCounters[gNewInputCountersIndex]
 // gets increased until either it reaches 0xFF or a new button was pressed.
