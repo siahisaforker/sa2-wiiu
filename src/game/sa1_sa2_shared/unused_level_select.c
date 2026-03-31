@@ -10,7 +10,7 @@
 #include "game/stage/stage.h"
 
 #if (GAME == GAME_SA2)
-#include "game/bosses/common.h"
+#include "game/sa2/bosses/common.h"
 #include "game/title_screen.h"
 #endif
 

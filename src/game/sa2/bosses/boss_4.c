@@ -14,8 +14,8 @@
 #include "game/stage/terrain_collision.h"
 
 #include "game/entity.h" // Coll_Player_Entity_Intersection
-#include "game/bosses/common.h"
-#include "game/bosses/eggmobile_escape_sequence.h"
+#include "game/sa2/bosses/common.h"
+#include "game/sa2/bosses/eggmobile_escape_sequence.h"
 #include "game/parameters/bosses.h"
 
 #include "game/stage/screen_shake.h"
@@ -486,7 +486,7 @@ static void AeroEgg_UpdateBossSpritesOnDefeat(AeroEgg *boss)
 
 // (93.54%) https://decomp.me/scratch/PPILk
 // (97.22%) https://decomp.me/scratch/30p2x
-NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc", void sub_8041D34(AeroEgg *boss))
+NONMATCH("asm/non_matching/game/sa2/bosses/boss_4__sub_8041D34.inc", void sub_8041D34(AeroEgg *boss))
 {
     ExplosionPartsInfo partsInfo;
     AeroEggSub *sub = &boss->sub;

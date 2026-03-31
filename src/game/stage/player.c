@@ -7,7 +7,7 @@
 #include "game/amy_attack_heart_effect.h"
 #include "game/boost_effect.h"
 #include "game/boost_mode_particles.h" // incl. CreateBoostModeParticles
-#include "game/bosses/common.h"
+#include "game/sa2/bosses/common.h"
 #include "game/cheese.h"
 #include "game/heart_particles_effect.h"
 #include "game/multiplayer/mp_attack_2_effect.h"

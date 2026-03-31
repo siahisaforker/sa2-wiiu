@@ -8,9 +8,9 @@
 #include "game/globals.h"
 #include "game/sa1_sa2_shared/collision.h"
 
-#include "game/bosses/boss_6.h"
-#include "game/bosses/common.h"
-#include "game/bosses/eggmobile_escape_sequence.h"
+#include "game/sa2/bosses/boss_6.h"
+#include "game/sa2/bosses/common.h"
+#include "game/sa2/bosses/eggmobile_escape_sequence.h"
 
 #include "game/stage/boss_results_transition.h"
 #include "game/stage/player.h"

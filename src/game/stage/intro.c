@@ -6,7 +6,7 @@
 #include "game/stage/player.h"
 #include "game/cheese.h"
 #include "game/stage/screen_mask.h"
-#include "game/bosses/common.h"
+#include "game/sa2/bosses/common.h"
 #include "game/countdown.h"
 #include "game/boost_effect.h"
 #include "game/multiplayer/mp_player.h"

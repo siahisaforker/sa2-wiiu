@@ -7,8 +7,8 @@
 #include "game/sa1_sa2_shared/collision.h"
 
 #include "game/sa2/save.h"
-#include "game/bosses/common.h"
-#include "game/bosses/eggmobile_escape_sequence.h"
+#include "game/sa2/bosses/common.h"
+#include "game/sa2/bosses/eggmobile_escape_sequence.h"
 #include "game/stage/boss_results_transition.h"
 
 #include "game/player_callbacks.h"
@@ -1657,7 +1657,7 @@ void sub_80454A4(EggSaucer *boss)
 }
 
 // (98.39%) https://decomp.me/scratch/wnQsf
-NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8045564.inc", void sub_8045564(EggSaucer *boss))
+NONMATCH("asm/non_matching/game/sa2/bosses/boss_5__sub_8045564.inc", void sub_8045564(EggSaucer *boss))
 {
     s32 index;
     s32 new_var = 0xF;

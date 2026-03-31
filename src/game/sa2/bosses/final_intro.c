@@ -7,7 +7,7 @@
 
 #include "game/globals.h"
 
-#include "game/bosses/final_intro.h"
+#include "game/sa2/bosses/final_intro.h"
 
 #include "game/math.h"
 
