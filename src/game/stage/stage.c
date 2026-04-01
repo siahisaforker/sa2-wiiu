@@ -10,7 +10,7 @@
 #include "game/sa2/save.h"
 #include "game/sa2/ui/game_over.h"
 #include "game/sa2/cheese.h"
-#include "game/stage/player_controls.h"
+#include "game/sa2/stage/player_controls.h"
 #include "game/stage/player_super_sonic.h"
 #include "game/sa2/race_progress.h"
 #include "game/stage/screen_shake.h"

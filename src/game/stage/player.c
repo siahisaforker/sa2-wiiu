@@ -24,7 +24,7 @@
 #include "game/stage/item_tasks.h"
 #include "game/stage/mp_sprite_task.h"
 #include "game/stage/player.h"
-#include "game/stage/player_controls.h"
+#include "game/sa2/stage/player_controls.h"
 #include "game/stage/player_super_sonic.h"
 #include "game/sa2/ui/stage_results.h"
 #include "game/stage/rings_scatter.h"

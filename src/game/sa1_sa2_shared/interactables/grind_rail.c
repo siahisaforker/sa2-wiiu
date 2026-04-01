@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-#include "game/stage/player_controls.h"
+#include "game/sa2/stage/player_controls.h"
 #include "game/types/entity.h"
 #include "game/sa1_sa2_shared/interactables/grind_rail.h"
 #include "game/stage/player.h"

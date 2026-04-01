@@ -16,7 +16,7 @@
 #include "game/multiplayer/mode_select.h"
 #include "game/stage/rings_scatter.h"
 
-#include "game/stage/player_controls.h"
+#include "game/sa2/stage/player_controls.h"
 #include "game/sa2/save.h"
 #include "game/sa2/gfx/screen_fade.h"
 #include "game/sa1_sa2_shared/entities_manager.h"

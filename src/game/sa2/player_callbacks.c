@@ -8,7 +8,7 @@
 #include "game/sa1_sa2_shared/collision.h"
 #include "game/stage/dust_effect_braking.h"
 #include "game/stage/mp_sprite_task.h"
-#include "game/stage/player_controls.h"
+#include "game/sa2/stage/player_controls.h"
 #include "game/sa2/boost_effect.h"
 #include "game/sa2/player_callbacks.h"
 

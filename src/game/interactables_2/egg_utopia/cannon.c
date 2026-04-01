@@ -2,7 +2,7 @@
 
 #include "core.h"
 
-#include "game/stage/player_controls.h"
+#include "game/sa2/stage/player_controls.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/interactables_2/egg_utopia/cannon.h"

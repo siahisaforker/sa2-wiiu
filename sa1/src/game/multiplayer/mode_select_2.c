@@ -13,7 +13,7 @@
 #include "game/types/camera.h"
 #include "game/types/player.h"
 #include "game/sa1/save.h"
-#include "game/stage/player_controls.h"
+#include "game/sa1/stage/player_controls.h"
 #include "game/stage/rings_scatter.h"
 #include "game/stage/stage.h"
 #include "game/sa1/title_screen.h"

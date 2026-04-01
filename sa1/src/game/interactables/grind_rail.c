@@ -5,7 +5,7 @@
 #include "game/parameters/characters.h"
 #include "game/stage/grind_effect_1.h"
 #include "game/stage/player.h"
-#include "game/stage/player_controls.h"
+#include "game/sa1/stage/player_controls.h"
 
 #include "constants/char_states.h"
 #include "constants/songs.h"

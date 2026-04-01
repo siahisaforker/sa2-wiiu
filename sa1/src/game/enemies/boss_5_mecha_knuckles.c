@@ -9,7 +9,7 @@
 #include "game/nuts_and_bolts_task.h"
 #include "game/sa1/save.h"
 #include "game/stage/dust_effect_braking.h"
-#include "game/stage/player_controls.h"
+#include "game/sa1/stage/player_controls.h"
 #include "game/stage/rings_scatter.h"
 #include "game/stage/screen_shake.h"
 #include "game/stage/terrain_collision.h"

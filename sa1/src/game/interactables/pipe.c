@@ -11,7 +11,7 @@
 #include "game/multiplayer/mp_player.h"
 #include "game/multiplayer/multiplayer_event_mgr.h"
 #include "game/stage/player.h"
-#include "game/stage/player_controls.h"
+#include "game/sa1/stage/player_controls.h"
 #include "game/stage/terrain_collision.h"
 
 #include "constants/animations.h"

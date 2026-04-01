@@ -20,7 +20,7 @@
 #include "game/stage/dust_effect_spindash.h"
 #include "game/stage/mp_sprite_task.h"
 #include "game/stage/player.h"
-#include "game/stage/player_controls.h"
+#include "game/sa1/stage/player_controls.h"
 #include "game/stage/player_sonic.h"
 #include "game/stage/player_tails.h"
 #include "game/stage/player_super_sonic.h"
@@ -57,7 +57,7 @@ extern s16 gUnknown_084AE188[9];
 extern s16 gUnknown_084AE19A[9];
 
 void Player_80447D8(Player *p);
-void SA2_LABEL(sub_802460C)(Player *p);
+void Player_HandleInputs(Player *p);
 
 void Player_Sonic_80473AC(Player *p);
 void Player_Tails_8047BA0(Player *p);
@@ -4029,7 +4029,7 @@ void Task_PlayerMain(void)
         }
     } else {
 #if (GAME == GAME_SA1)
-        SA2_LABEL(sub_802460C)(p);
+        Player_HandleInputs(p);
         SA2_LABEL(sub_8023878)(p);
 
         if (!(p->moveState & 0x400000)) {
@@ -4402,7 +4402,7 @@ void Task_8045B38(void)
 }
 
 // Confusion state related
-void SA2_LABEL(sub_802460C)(Player *p)
+void Player_HandleInputs(Player *p)
 {
     u8 r0;
     u8 r1;

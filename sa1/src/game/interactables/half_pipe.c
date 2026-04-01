@@ -2,7 +2,7 @@
 #include "core.h"
 #include "trig.h"
 #include "game/types/entity.h"
-#include "game/stage/player_controls.h"
+#include "game/sa1/stage/player_controls.h"
 
 #include "constants/char_states.h"
 

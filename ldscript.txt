@@ -56,7 +56,7 @@ SECTIONS
         src/game/stage/rings_scatter.o(.data);
         src/game/stage/player.o(.data);
         src/game/stage/underwater_effects.o(.data);
-        src/game/stage/player_controls.o(.data);
+        src/game/sa2/stage/player_controls.o(.data);
         src/game/stage/player_super_sonic.o(.data);
         src/game/sa2/gfx/stage_ui.o(.data);
         src/game/sa2/gfx/debug_text_printer.o(.data);
@@ -157,7 +157,7 @@ SECTIONS
         src/game/stage/item_tasks.o(.text);
         src/game/stage/underwater_effects.o(.text);
         src/game/stage/screen_shake.o(.text);
-        src/game/stage/player_controls.o(.text);
+        src/game/sa2/stage/player_controls.o(.text);
         src/game/stage/player_super_sonic.o(.text);
 
         src/game/sa2/gfx/stage_ui.o(.text);

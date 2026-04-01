@@ -8,7 +8,7 @@
 #include "game/interactables_2/sky_canyon/propeller_spring.h"
 #include "game/interactables_2/sky_canyon_init.h"
 
-#include "game/stage/player_controls.h"
+#include "game/sa2/stage/player_controls.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 

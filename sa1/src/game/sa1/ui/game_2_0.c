@@ -7,7 +7,7 @@
 #include "game/sa1/title_screen.h"
 #include "game/sa1/save.h"
 #include "game/sa1/special_stage/main.h"
-#include "game/stage/player_controls.h"
+#include "game/sa1/stage/player_controls.h"
 #include "game/stage/stage.h"
 #include "game/sa1/gfx/stage_ui.h"
 #include "data/ui_graphics.h"

@@ -23,6 +23,7 @@
 #include "game/stage/screen_shake.h"
 #include "game/stage/stage.h"
 #include "game/sa1/ui/time_attack_lobby.h"
+#include "game/sa1/stage/player_controls.h"
 #if (GAME == GAME_SA1)
 #include "game/sa1/ui/time_over.h"
 #endif
@@ -48,8 +49,6 @@ extern bool32 CreateSpotlightsManager(void); // Spotlight-beam related
 extern void CreateChaoHuntHUD();
 extern void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask);
 extern struct Task *CreateMultiplayerChao(u8, u8);
-extern void SetFaceButtonConfig(bool32);
-
 void SA2_LABEL(sub_801F044)(void);
 #if (GAME == GAME_SA1)
 void SA2_LABEL(sub_80213C0)(u32 UNUSED characterId, u32 UNUSED levelId, Player *player);
@@ -774,7 +773,7 @@ void ApplyGameStageSettings(void)
         LOADED_SAVE->difficultyLevel = DIFFICULTY_NORMAL;
     }
 
-    SetFaceButtonConfig(LOADED_SAVE->btnConfig);
+    SetPlayerControls(LOADED_SAVE->btnConfig);
     GameStageStart();
 }
 

@@ -141,7 +141,7 @@ SA2_C_FILES := \
 	sa2/game/stage/terrain_collision.c \
 	sa2/game/stage/player.c \
 	sa2/game/stage/rings_scatter.c \
-	sa2/game/stage/player_controls.c \
+	sa2/game/sa2/stage/player_controls.c \
 	sa2/game/stage/stage.c \
 	sa2/game/multiboot/connection.c \
 	sa2/game/game.c \

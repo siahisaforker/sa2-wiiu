@@ -5,7 +5,7 @@
 
 #include "game/globals.h"
 
-#include "game/stage/player_controls.h"
+#include "game/sa2/stage/player_controls.h"
 #include "constants/zones.h"
 #include "constants/characters.h"
 

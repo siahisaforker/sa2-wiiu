@@ -7,7 +7,7 @@
 #include "game/some_task_manager.h"
 #include "game/stage/mp_sprite_task.h"
 #include "game/stage/player.h"
-#include "game/stage/player_controls.h"
+#include "game/sa1/stage/player_controls.h"
 #include "game/stage/player_sonic.h"
 
 #include "constants/animations.h"
