@@ -1,6 +1,6 @@
 #include "global.h"
 
-#include "game/sa1_sa2_shared/entities_manager.h"
+#include "game/shared/stage/entities_manager.h"
 
 #include "game/types/entity.h"
 #include "game/sa2/enemies/mouse.h"

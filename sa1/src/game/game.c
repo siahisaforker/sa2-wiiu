@@ -12,11 +12,11 @@
 
 #include "game/globals.h"
 #include "game/types/player.h"
-//#include "game/sa1_sa2_shared/entities_manager.h"
+//#include "game/shared/stage/entities_manager.h"
 
 #include "game/sa1/ui/character_select.h"
 #include "game/stage/tilemap_table.h"
-#include "game/stage/stage.h"
+#include "game/shared/stage/stage.h"
 //#include "game/shared/stage/player.h"
 #include "game/shared/stage/camera.h"
 #include "game/shared/stage/underwater_effects.h"
@@ -24,7 +24,7 @@
 #include "game/shared/stage/rings_scatter.h"
 
 #include "game/dummy_task.h"
-#include "game/water_effects.h"
+#include "game/shared/stage/water_effects.h"
 
 #if (GAME == GAME_SA1)
 #include "game/gTask_03006240.h"

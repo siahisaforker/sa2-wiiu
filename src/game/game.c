@@ -10,11 +10,11 @@
 #include "game/sa2/options_screen.h"
 #include "game/multiboot/connection.h"
 
-#include "game/sa1_sa2_shared/entities_manager.h"
+#include "game/shared/stage/entities_manager.h"
 
 #include "game/decomp_credits.h"
-#include "game/stage/tilemap_table.h"
-#include "game/stage/stage.h"
+#include "game/sa2/stage/tilemap_table.h"
+#include "game/shared/stage/stage.h"
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/camera.h"
 #include "game/shared/stage/underwater_effects.h"
@@ -25,7 +25,7 @@
 #include "game/multiboot/collect_rings/results.h"
 #endif
 
-#include "game/water_effects.h"
+#include "game/shared/stage/water_effects.h"
 #include "game/dummy_task.h"
 
 #if TAS_TESTING

@@ -5,11 +5,11 @@
 #include "trig.h"
 #include "lib/m4a/m4a.h"
 #include "game/types/camera.h"
-#include "game/sa1_sa2_shared/collision.h"
+#include "game/shared/stage/collision.h"
 
 #include "game/game.h" // sub_801E4E4
 
-#include "game/sa2/player_callbacks.h"
+#include "game/sa2/stage/player_callbacks.h"
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/terrain_collision.h"
 
@@ -19,7 +19,7 @@
 #include "game/parameters/bosses.h"
 
 #include "game/shared/stage/screen_shake.h"
-#include "game/sa2/gfx/boss_results_transition.h"
+#include "game/sa2/stage/boss_results_transition.h"
 
 #include "constants/animations.h"
 #include "constants/char_states.h"

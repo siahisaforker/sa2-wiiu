@@ -9,8 +9,8 @@
 #include "game/shared/stage/camera.h"
 #include "game/sa2/stage/player_controls.h"
 #include "game/interactables_1/rotating_handle.h"
-#include "game/sa1_sa2_shared/collision.h"
-#include "game/sa1_sa2_shared/entities_manager.h"
+#include "game/shared/stage/collision.h"
+#include "game/shared/stage/entities_manager.h"
 
 #include "malloc_vram.h"
 #include "sprite.h"

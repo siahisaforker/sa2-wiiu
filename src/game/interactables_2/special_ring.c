@@ -2,10 +2,10 @@
 #include "malloc_vram.h"
 #include "lib/m4a/m4a.h"
 
-#include "game/sa2/player_callbacks.h"
+#include "game/sa2/stage/player_callbacks.h"
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/camera.h"
-#include "game/sa2/cheese.h"
+#include "game/sa2/stage/cheese.h"
 #include "task.h"
 #include "core.h"
 

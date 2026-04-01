@@ -3,7 +3,7 @@
 #include "trig.h"
 #include "game/types/entity.h"
 #include "game/shared/stage/player.h"
-#include "game/water_effects.h"
+#include "game/shared/stage/water_effects.h"
 #include "malloc_vram.h"
 #include "lib/m4a/m4a.h"
 

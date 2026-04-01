@@ -2,10 +2,10 @@
 #include "core.h"
 #include "trig.h"
 #include "game/types/entity.h"
-#include "game/sa1_sa2_shared/collision.h"
+#include "game/shared/stage/collision.h"
 #include "game/multiplayer/multiplayer_event_mgr.h"
 #include "game/shared/stage/player.h"
-#include "game/water_effects.h"
+#include "game/shared/stage/water_effects.h"
 #include "malloc_vram.h"
 #include "lib/m4a/m4a.h"
 

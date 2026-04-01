@@ -6,10 +6,10 @@
 #include "game/types/entity.h"
 #include "game/enemies/bosses_shared.h"
 #include "game/nuts_and_bolts_task.h"
-#include "game/sa1_sa2_shared/collision.h"
+#include "game/shared/stage/collision.h"
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/screen_shake.h"
-#include "game/sa1/ui/stage_results.h" // CreateStageResults
+#include "game/sa1/stage/stage_results.h" // CreateStageResults
 #include "game/shared/stage/terrain_collision.h"
 
 #include "constants/animations.h"

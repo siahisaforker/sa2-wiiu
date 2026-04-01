@@ -5,8 +5,8 @@
 #include "game/multiplayer/chao.h"
 #include "game/multiplayer/multipak_connection.h"
 #include "game/globals.h"
-#include "game/stage/stage.h"
-#include "game/sa1/gfx/stage_ui.h"
+#include "game/shared/stage/stage.h"
+#include "game/sa1/stage/stage_ui.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

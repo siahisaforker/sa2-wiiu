@@ -6,14 +6,14 @@
 #include "game/globals.h"
 
 #include "game/shared/stage/camera.h"
-#include "game/stage/stage.h"
+#include "game/shared/stage/stage.h"
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/terrain_collision.h"
 
 #if (GAME == GAME_SA1)
 #include "game/multiplayer/mp_player.h"
 #elif (GAME == GAME_SA2)
-#include "game/stage/player_super_sonic.h"
+#include "game/sa2/stage/player_super_sonic.h"
 #include "game/stage/background/dummy.h"
 #include "game/stage/background/zone_1.h"
 #include "game/stage/background/zone_2.h"

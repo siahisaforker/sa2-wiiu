@@ -2,8 +2,8 @@
 #include "core.h"
 #include "trig.h"
 #include "malloc_vram.h"
-#include "game/sa1_sa2_shared/collision.h"
-#include "game/sa1_sa2_shared/entities_manager.h"
+#include "game/shared/stage/collision.h"
+#include "game/shared/stage/entities_manager.h"
 
 #include "constants/animations.h"
 #include "constants/vram_hardcoded.h"

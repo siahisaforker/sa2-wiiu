@@ -11,8 +11,8 @@
 #include "game/shared/stage/camera.h"
 
 #include "game/shared/stage/rings_scatter.h"
-#include "game/shared/collect_ring_effect.h"
-#include "game/sa1_sa2_shared/rings_manager.h"
+#include "game/shared/stage/collect_ring_effect.h"
+#include "game/shared/stage/rings_manager.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

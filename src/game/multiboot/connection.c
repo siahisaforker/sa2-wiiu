@@ -7,7 +7,7 @@
 #include "mb_programs.h"
 #include "multi_boot.h"
 #include "sio32_multi_load.h"
-#include "game/stage/stage.h"
+#include "game/shared/stage/stage.h"
 #include "game/multiboot/connection.h"
 #include "game/multiboot/collect_rings/results.h"
 #include "game/multiplayer/multipak_connection.h"
@@ -18,8 +18,8 @@
 
 #include "game/sa2/stage/player_controls.h"
 #include "game/sa2/save.h"
-#include "game/sa2/gfx/screen_fade.h"
-#include "game/sa1_sa2_shared/entities_manager.h"
+#include "game/sa2/stage/screen_fade.h"
+#include "game/shared/stage/entities_manager.h"
 #include "game/sa2/title_screen.h"
 #include "game/dummy_task.h"
 

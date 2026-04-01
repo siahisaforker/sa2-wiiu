@@ -1,5 +1,5 @@
 #include "core.h"
-#include "game/sa1_sa2_shared/collision.h"
+#include "game/shared/stage/collision.h"
 #include "game/multiplayer/mp_attack_1_effect.h"
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/camera.h"

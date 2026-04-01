@@ -52,7 +52,7 @@ src/game/multiplayer/chao_message.o(.bss);
 src/game/dummy_task.o(.data);
 
 . = 0x000058C0;
-src/game/stage/stage.o(.data);
+src/game/shared/stage/stage.o(.data);
 
 . = 0x000058D0; gStageBackgroundsRam  = .;
 . = 0x000059D0; gCamera = .;
@@ -62,11 +62,11 @@ src/game/stage/stage.o(.data);
 
 . = 0x00005A20; 
 src/game/shared/stage/player.o(.data);
-src/game/stage/player_super_sonic.o(.data);
+src/game/sa1/stage/player_super_sonic.o(.data);
 src/game/shared/stage/underwater_effects.o(.data);
 
 . = 0x00005C80;
-src/game/water_effects.o(.data);
+src/game/shared/stage/water_effects.o(.data);
 
 . = 0x000060D0;
 sa2/src/input_recorder.o(.data);
@@ -74,7 +74,7 @@ src/game/sa1/stage/player_controls.o(.data);
 src/game/enemies/boss_xtra_super_egg_robot.o(.data);
 
 . = 0x00006240; 
-src/game/sa1/gfx/ui_rendering.o(.data);
+src/game/sa1/stage/ui_rendering.o(.data);
 
 . = 0x00006414;
 sa2/src/lib/agb_flash/agb_flash.o(.data);

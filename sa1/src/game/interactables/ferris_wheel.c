@@ -4,9 +4,9 @@
 #include "malloc_vram.h"
 #include "lib/m4a/m4a.h"
 #include "game/types/entity.h"
-#include "game/sa1_sa2_shared/collision.h"
+#include "game/shared/stage/collision.h"
 #include "game/shared/stage/player.h"
-#include "game/sa1/gfx/stage_ui.h"
+#include "game/sa1/stage/stage_ui.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

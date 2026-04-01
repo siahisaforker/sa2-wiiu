@@ -7,8 +7,8 @@
 #include "game/multiplayer/multipak_connection.h"
 #include "game/globals.h"
 #include "game/sa1/save.h"
-#include "game/stage/stage.h"
-#include "game/sa1/gfx/stage_ui.h"
+#include "game/shared/stage/stage.h"
+#include "game/sa1/stage/stage_ui.h"
 #include "game/time_attack/menu.h"
 
 #include "constants/animations.h"

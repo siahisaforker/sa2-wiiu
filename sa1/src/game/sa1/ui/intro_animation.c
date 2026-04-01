@@ -5,10 +5,10 @@
 #include "lib/m4a/m4a.h"
 #include "constants/ui_graphics.h"
 #include "game/types/entity.h"
-#include "game/sa1/ui/game_over.h"
+#include "game/sa1/stage/game_over.h"
 #include "game/gTask_03006240.h"
-#include "game/sa1_sa2_shared/spot_light_beam_task.h"
-#include "game/sa1/gfx/stage_ui.h"
+#include "game/shared/stage/spot_light_beam_task.h"
+#include "game/sa1/stage/stage_ui.h"
 #include "game/sa1/title_screen.h"
 
 #include "constants/animations.h"

@@ -42,14 +42,14 @@ SECTIONS
         src/game/globals.o(.data);
 
         /* game */
-        src/game/sa2/input_buffer.o(.data);
-        src/game/water_effects.o(.data);
-        src/game/sa2/cheese.o(.data);
-        src/game/sa2/boost_effect.o(.data);
+        src/game/sa2/stage/input_buffer.o(.data);
+        src/game/shared/stage/water_effects.o(.data);
+        src/game/sa2/stage/cheese.o(.data);
+        src/game/sa2/stage/boost_effect.o(.data);
         src/game/multiplayer/mp_player.o(.data);
         src/game/multiplayer/mp_attack_2_effect.o(.data);
         src/game/dummy_task.o(.data);
-        src/game/stage/stage.o(.data);
+        src/game/shared/stage/stage.o(.data);
         src/game/shared/stage/camera.o(.data);
         src/game/shared/stage/terrain_collision.o(.data);
         src/game/shared/stage/dust_effect_braking.o(.data);
@@ -57,9 +57,9 @@ SECTIONS
         src/game/shared/stage/player.o(.data);
         src/game/shared/stage/underwater_effects.o(.data);
         src/game/sa2/stage/player_controls.o(.data);
-        src/game/stage/player_super_sonic.o(.data);
-        src/game/sa2/gfx/stage_ui.o(.data);
-        src/game/sa2/gfx/debug_text_printer.o(.data);
+        src/game/sa2/stage/player_super_sonic.o(.data);
+        src/game/sa2/stage/stage_ui.o(.data);
+        src/game/sa2/stage/debug_text_printer.o(.data);
         src/game/sa2/bosses/common.o(.data);
         src/game/sa2/options_screen.o(.data);
         src/game/sa2/special_stage/utils.o(.data);
@@ -100,40 +100,42 @@ SECTIONS
         src/input_recorder.o(.text);
 
         /* "SA1 Leftovers" */
-        src/game/sa1_sa2_shared/rings_manager.o(.text);
-        src/game/sa1_sa2_shared/entities_manager.o(.text);
-        src/game/shared/palette_loader.o(.text);
-        src/game/sa1_sa2_shared/unused_level_select.o(.text);
-        src/game/sa1_sa2_shared/spot_light_beam_task.o(.text);
-        src/game/sa1_sa2_shared/enemy_defeat_score.o(.text);
-        src/game/shared/demo_manager.o(.text);
-        src/game/sa1_sa2_shared/unused_flash_task.o(.text);
-        src/game/sa1_sa2_shared/simple_sprite_particle.o(.text);
-        src/game/sa1_sa2_shared/spot_light.o(.text);
-        src/game/sa1_sa2_shared/pause_menu.o(.text);
-        src/game/shared/collect_ring_effect.o(.text);
-        src/game/sa1_sa2_shared/itembox.o(.text);
-        src/game/sa1_sa2_shared/dust_cloud.o(.text);
-        src/game/shared/interactables/magnetic_ring.o(.text);
-        src/game/sa1_sa2_shared/music_manager.o(.text);
-        src/game/sa1_sa2_shared/collision.o(.text);
-        src/game/sa2/input_buffer.o(.text);
-        src/game/sa1_sa2_shared/interactables/spring.o(.text);
-        src/game/sa1_sa2_shared/interactables/platform.o(.text);
-        src/game/sa1_sa2_shared/interactables/platform_square.o(.text);
-        src/game/sa1_sa2_shared/interactables/ramp.o(.text);
-        src/game/sa1_sa2_shared/interactables/grind_rail.o(.text);
-        src/game/sa1_sa2_shared/interactables/ceiling_slope.o(.text);
-        src/game/sa1_sa2_shared/interactables/pipe.o(.text);
-        src/game/sa1_sa2_shared/interactables/platform_thin.o(.text);
-        src/game/sa1_sa2_shared/interactables/slidy_ice.o(.text);
-        /* game/sa1_sa2_shared/globals ? */
+        src/game/shared/stage/rings_manager.o(.text);
+        src/game/shared/stage/entities_manager.o(.text);
+        src/game/shared/stage/palette_loader.o(.text);
+        src/game/shared/stage/unused_level_select.o(.text);
+        src/game/shared/stage/spot_light_beam_task.o(.text);
+        src/game/shared/stage/enemy_defeat_score.o(.text);
+        src/game/shared/stage/demo_manager.o(.text);
+        src/game/shared/stage/unused_flash_task.o(.text);
+        src/game/sa2/stage/simple_sprite_particle.o(.text);
+        src/game/shared/stage/spot_light.o(.text);
+        src/game/shared/stage/pause_menu.o(.text);
+        src/game/shared/stage/collect_ring_effect.o(.text);
+        src/game/sa2/stage/itembox.o(.text);
+        src/game/shared/stage/dust_cloud.o(.text);
+        src/game/shared/stage/magnetic_ring.o(.text);
+        src/game/shared/stage/music_manager.o(.text);
+        src/game/shared/stage/collision.o(.text);
+    
+        src/game/sa2/stage/input_buffer.o(.text);
+        src/game/sa2/stage/interactables/spring.o(.text);
+        src/game/sa2/stage/interactables/platform.o(.text);
+        src/game/sa2/stage/interactables/platform_square.o(.text);
+        src/game/sa2/stage/interactables/ramp.o(.text);
+        src/game/sa2/stage/interactables/grind_rail.o(.text);
+        src/game/sa2/stage/interactables/ceiling_slope.o(.text);
+        src/game/sa2/stage/interactables/pipe.o(.text);
+        src/game/sa2/stage/interactables/platform_thin.o(.text);
+        src/game/sa2/stage/interactables/slidy_ice.o(.text);
+    
+        /* game/shared/stage/globals ? */
 
-        src/game/water_effects.o(.text);
-        src/game/sa2/player_callbacks.o(.text);
-        src/game/sa2/cheese.o(.text);
-        src/game/sa2/boost_effect.o(.text);
-        src/game/shared/amy_attack_heart_effect.o(.text);
+        src/game/shared/stage/water_effects.o(.text);
+        src/game/sa2/stage/player_callbacks.o(.text);
+        src/game/sa2/stage/cheese.o(.text);
+        src/game/sa2/stage/boost_effect.o(.text);
+        src/game/shared/stage/amy_attack_heart_effect.o(.text);
 
         src/game/multiplayer/mp_player.o(.text);
         src/game/multiplayer/multiplayer_event_mgr.o(.text);
@@ -145,7 +147,7 @@ SECTIONS
         src/game/game.o(.text);
         src/game/dummy_task.o(.text);
     
-        src/game/stage/stage.o(.text);
+        src/game/shared/stage/stage.o(.text);
         src/game/shared/stage/camera.o(.text);
         src/game/shared/stage/terrain_collision.o(.text);
         src/game/shared/stage/mp_sprite_task.o(.text);
@@ -158,21 +160,23 @@ SECTIONS
         src/game/shared/stage/underwater_effects.o(.text);
         src/game/shared/stage/screen_shake.o(.text);
         src/game/sa2/stage/player_controls.o(.text);
-        src/game/stage/player_super_sonic.o(.text);
+        src/game/sa2/stage/player_super_sonic.o(.text);
 
-        src/game/sa2/gfx/stage_ui.o(.text);
-        src/game/sa2/gfx/debug_text_printer.o(.text);
-        src/game/sa2/gfx/screen_fade.o(.text);
-        src/game/sa2/gfx/trapped_animals.o(.text);
-        src/game/sa2/gfx/screen_mask.o(.text);
-        src/game/sa2/gfx/boss_results_transition.o(.text);
+        src/game/sa2/stage/stage_ui.o(.text);
+        src/game/sa2/stage/debug_text_printer.o(.text);
+        src/game/sa2/stage/screen_fade.o(.text);
+        src/game/sa2/stage/trapped_animals.o(.text);
+        src/game/sa2/stage/screen_mask.o(.text);
+        src/game/sa2/stage/boss_results_transition.o(.text);
 
-        src/game/sa2/ui/stage_intro.o(.text);
-        src/game/sa2/ui/stage_results.o(.text);
+        src/game/sa2/stage/stage_intro.o(.text);
+        src/game/sa2/stage/stage_results.o(.text);
+
         src/game/sa2/ui/character_select.o(.text);
         src/game/sa2/ui/course_select.o(.text);
-        src/game/sa2/ui/countdown.o(.text);
-        src/game/sa2/ui/game_over.o(.text);
+    
+        src/game/sa2/stage/countdown.o(.text);
+        src/game/sa2/stage/game_over.o(.text);
 
         src/game/sa2/bosses/final_intro.o(.text);
         src/game/sa2/bosses/explosion_parts.o(.text);
@@ -296,18 +300,18 @@ SECTIONS
 
         src/game/math.o(.text);
 
-        src/game/sa2/mystery_itembox.o(.text);
-        src/game/sa2/heart_particles_effect.o(.text);
-        src/game/sa2/race_progress.o(.text);
+        src/game/sa2/stage/mystery_itembox.o(.text);
+        src/game/sa2/stage/heart_particles_effect.o(.text);
+        src/game/sa2/stage/race_progress.o(.text);
         src/game/multiplayer/mp_attack_1_effect.o(.text);
-        src/game/sa2/multiplayer_lobby.o(.text);
 
-        /* time_attack_screens */
+        /* menus */
+        src/game/sa2/multiplayer_lobby.o(.text);
         src/game/sa2/time_attack/mode_select.o(.text);
         src/game/sa2/time_attack/lobby.o(.text);
         src/game/sa2/time_attack/results.o(.text);
 
-        src/game/sa2/boost_mode_particles.o(.text);
+        src/game/sa2/stage/boost_mode_particles.o(.text);
     
         src/game/sa2/sound_test.o(.text);
         src/game/sa2/title_screen.o(.text);
@@ -377,52 +381,50 @@ SECTIONS
         /* game Data */
         src/game/sa2/assets/compressed/entities.o(.rodata);
         src/game/sa2/assets/compressed/roms.o(.rodata);
+        
+        src/game/shared/stage/rings_manager.o(.rodata);
+        src/game/shared/stage/entities_manager.o(.rodata);
+        src/game/shared/stage/unused_level_select.o(.rodata);
+        src/game/shared/stage/unused_flash_task.o(.rodata);
+        src/game/shared/stage/pause_menu.o(.rodata);
+        src/game/sa2/stage/itembox.o(.rodata);
+        src/game/shared/stage/music_manager.o(.rodata);
+        src/game/sa2/stage/input_buffer.o(.rodata);
+        src/game/sa2/stage/interactables/spring.o(.rodata);
+        src/game/sa2/stage/interactables/platform.o(.rodata);
+        src/game/sa2/stage/interactables/platform_square.o(.rodata);
+        src/game/sa2/stage/interactables/ramp.o(.rodata);
+        src/game/sa2/stage/interactables/grind_rail.o(.rodata);
+        src/game/sa2/stage/interactables/ceiling_slope.o(.rodata);
+        src/game/sa2/stage/interactables/pipe.o(.rodata);
+        src/game/sa2/stage/interactables/platform_thin.o(.rodata);
+        src/game/sa2/stage/interactables/slidy_ice.o(.rodata);
 
-        /* "sa1_sa2_shared" data */
-        src/game/sa1_sa2_shared/rings_manager.o(.rodata);
-        src/game/sa1_sa2_shared/entities_manager.o(.rodata);
-        src/game/sa1_sa2_shared/unused_level_select.o(.rodata);
-        src/game/sa1_sa2_shared/unused_flash_task.o(.rodata);
-        src/game/sa1_sa2_shared/pause_menu.o(.rodata);
-        src/game/sa1_sa2_shared/itembox.o(.rodata);
-        src/game/sa1_sa2_shared/music_manager.o(.rodata);
-        src/game/sa2/input_buffer.o(.rodata);
-        src/game/sa1_sa2_shared/interactables/spring.o(.rodata);
-        src/game/sa1_sa2_shared/interactables/platform.o(.rodata);
-        src/game/sa1_sa2_shared/interactables/platform_square.o(.rodata);
-        src/game/sa1_sa2_shared/interactables/ramp.o(.rodata);
-        src/game/sa1_sa2_shared/interactables/grind_rail.o(.rodata);
-        src/game/sa1_sa2_shared/interactables/ceiling_slope.o(.rodata);
-        src/game/sa1_sa2_shared/interactables/pipe.o(.rodata);
-        src/game/sa1_sa2_shared/interactables/platform_thin.o(.rodata);
-        src/game/sa1_sa2_shared/interactables/slidy_ice.o(.rodata);
-
-        /* game */
-        src/game/water_effects.o(.rodata);
-        src/game/sa2/player_callbacks.o(.rodata);
-        src/game/sa2/cheese.o(.rodata);
-        src/game/sa2/boost_effect.o(.rodata);
-        src/game/shared/amy_attack_heart_effect.o(.rodata);
+        src/game/shared/stage/water_effects.o(.rodata);
+        src/game/sa2/stage/player_callbacks.o(.rodata);
+        src/game/sa2/stage/cheese.o(.rodata);
+        src/game/sa2/stage/boost_effect.o(.rodata);
+        src/game/shared/stage/amy_attack_heart_effect.o(.rodata);
         src/game/multiplayer/multiplayer_event_mgr.o(.rodata);
         src/game/multiplayer/finish.o(.rodata);
 
-        src/game/stage/stage.o(.rodata);
+        src/game/shared/stage/stage.o(.rodata);
         src/game/shared/stage/camera.o(.rodata);
-        src/game/stage/tilemap_table.o(.rodata);
+        src/game/sa2/stage/tilemap_table.o(.rodata);
         src/game/shared/stage/terrain_collision.o(.rodata);
         src/game/shared/stage/mp_sprite_task.o(.rodata);
-        src/game/stage/spawn_positions.o(.rodata);
+        src/game/sa2/stage/spawn_positions.o(.rodata);
         src/game/shared/stage/rings_scatter.o(.rodata);
         src/game/shared/stage/player.o(.rodata);
-        src/game/stage/player_super_sonic.o(.rodata);
-        src/game/sa2/gfx/stage_ui.o(.rodata);
-        src/game/sa2/gfx/trapped_animals.o(.rodata);
-        src/game/sa2/gfx/boss_results_transition.o(.rodata);
-        src/game/sa2/ui/stage_intro.o(.rodata);
-        src/game/sa2/ui/stage_results.o(.rodata);
+        src/game/sa2/stage/player_super_sonic.o(.rodata);
+        src/game/sa2/stage/stage_ui.o(.rodata);
+        src/game/sa2/stage/trapped_animals.o(.rodata);
+        src/game/sa2/stage/boss_results_transition.o(.rodata);
+        src/game/sa2/stage/stage_intro.o(.rodata);
+        src/game/sa2/stage/stage_results.o(.rodata);
         src/game/sa2/ui/character_select.o(.rodata);
         src/game/sa2/ui/course_select.o(.rodata);
-        src/game/sa2/ui/countdown.o(.rodata);
+        src/game/sa2/stage/countdown.o(.rodata);
         src/game/sa2/bosses/final_intro.o(.rodata);
         src/game/sa2/bosses/common.o(.rodata);
         src/game/sa2/bosses/boss_1.o(.rodata);
@@ -475,8 +477,8 @@ SECTIONS
         src/game/multiboot/connection.o(.rodata);
         src/game/multiboot/collect_rings/time_display.o(.rodata);
         src/game/math.o(.rodata);
-        src/game/sa2/mystery_itembox.o(.rodata);
-        src/game/sa2/race_progress.o(.rodata);
+        src/game/sa2/stage/mystery_itembox.o(.rodata);
+        src/game/sa2/stage/race_progress.o(.rodata);
         src/game/multiplayer/mp_attack_1_effect.o(.rodata);
         src/game/sa2/multiplayer_lobby.o(.rodata);
         src/game/sa2/time_attack/mode_select.o(.rodata);

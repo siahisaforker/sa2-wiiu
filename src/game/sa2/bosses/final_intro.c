@@ -13,7 +13,7 @@
 
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/camera.h"
-#include "game/stage/stage.h"
+#include "game/shared/stage/stage.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

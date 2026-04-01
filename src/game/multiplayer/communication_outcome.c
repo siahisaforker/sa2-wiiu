@@ -16,7 +16,7 @@
 #include "game/multiplayer/results.h"
 #endif
 
-#include "game/stage/tilemap_table.h"
+#include "game/sa2/stage/tilemap_table.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

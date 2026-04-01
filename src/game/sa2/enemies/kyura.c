@@ -8,7 +8,7 @@
 #include "game/sa2/enemies/kyura.h"
 #include "game/sa2/enemies/projectiles.h"
 
-#include "game/sa1_sa2_shared/entities_manager.h"
+#include "game/shared/stage/entities_manager.h"
 
 #include "constants/animations.h"
 

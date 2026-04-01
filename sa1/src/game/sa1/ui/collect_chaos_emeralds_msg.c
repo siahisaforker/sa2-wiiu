@@ -1,10 +1,10 @@
 #include "global.h"
 #include "core.h"
 #include "game/types/entity.h"
-#include "game/sa1/ui/game_over.h"
+#include "game/sa1/stage/game_over.h"
 #include "game/sa1/title_screen.h"
 #include "game/sa1/save.h"
-#include "game/sa1/gfx/stage_ui.h"
+#include "game/sa1/stage/stage_ui.h"
 #include "data/ui_graphics.h"
 
 #include "constants/animations.h"

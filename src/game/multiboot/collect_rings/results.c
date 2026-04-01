@@ -2,8 +2,8 @@
 #include "core.h"
 
 #include "game/shared/stage/player.h"
-#include "game/stage/stage.h"
-#include "game/stage/tilemap_table.h"
+#include "game/shared/stage/stage.h"
+#include "game/sa2/stage/tilemap_table.h"
 
 #include "game/multiboot/connection.h"
 #include "game/multiplayer/multipak_connection.h"
@@ -14,7 +14,7 @@
 #include "bg_triangles.h"
 #include "game/sa2/save.h"
 #include "game/sa2/title_screen.h"
-#include "game/sa2/gfx/screen_fade.h"
+#include "game/sa2/stage/screen_fade.h"
 #include "lib/m4a/m4a.h"
 #include "multi_boot.h"
 #include "sio32_multi_load.h"

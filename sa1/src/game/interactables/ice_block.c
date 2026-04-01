@@ -2,13 +2,13 @@
 #include "core.h"
 #include "trig.h"
 #include "game/types/entity.h"
-#include "game/sa1_sa2_shared/collision.h"
-#include "game/sa1_sa2_shared/dust_cloud.h"
-#include "game/sa1_sa2_shared/entities_manager.h" // TaskDestructor_EntityShared
+#include "game/shared/stage/collision.h"
+#include "game/shared/stage/dust_cloud.h"
+#include "game/shared/stage/entities_manager.h" // TaskDestructor_EntityShared
 #include "game/multiplayer/multiplayer_event_mgr.h"
 #include "game/shared/stage/terrain_collision.h"
 #include "game/shared/stage/player.h"
-#include "game/water_effects.h"
+#include "game/shared/stage/water_effects.h"
 #include "malloc_vram.h"
 #include "lib/m4a/m4a.h"
 

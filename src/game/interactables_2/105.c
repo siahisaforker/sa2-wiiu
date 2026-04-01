@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/types.h"
 
-#include "game/sa1_sa2_shared/collision.h"
+#include "game/shared/stage/collision.h"
 
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/camera.h"

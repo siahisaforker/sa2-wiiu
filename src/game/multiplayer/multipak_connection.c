@@ -12,8 +12,8 @@
 #include "game/sa2/save.h"
 #include "game/sa2/title_screen.h"
 
-#include "game/sa2/gfx/screen_fade.h"
-#include "game/stage/tilemap_table.h"
+#include "game/sa2/stage/screen_fade.h"
+#include "game/sa2/stage/tilemap_table.h"
 #include "lib/m4a/m4a.h"
 #include "constants/text.h"
 #include "flags.h"

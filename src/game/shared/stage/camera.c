@@ -5,12 +5,12 @@
 #include "trig.h"
 
 #include "game/globals.h"
-#include "game/sa1_sa2_shared/spot_light.h"
+#include "game/shared/stage/spot_light.h"
 
-#include "game/stage/player_super_sonic.h"
+#include "game/sa2/stage/player_super_sonic.h"
 
 #include "game/shared/stage/camera.h"
-#include "game/stage/stage.h"
+#include "game/shared/stage/stage.h"
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/terrain_collision.h"
 

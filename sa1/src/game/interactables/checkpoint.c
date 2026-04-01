@@ -4,7 +4,7 @@
 #include "malloc_vram.h"
 #include "game/types/entity.h"
 #include "game/types/camera.h"
-#include "game/sa1_sa2_shared/entities_manager.h"
+#include "game/shared/stage/entities_manager.h"
 #include "game/egg_rocket_transitions.h"
 
 #include "constants/animations.h"

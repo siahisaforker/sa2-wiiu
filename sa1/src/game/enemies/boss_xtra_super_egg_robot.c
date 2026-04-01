@@ -7,7 +7,7 @@
 #include "game/types/entity.h"
 #include "game/enemies/bosses_shared.h" // CreatePreBossCameraPan
 #include "game/nuts_and_bolts_task.h"
-#include "game/sa1_sa2_shared/collision.h"
+#include "game/shared/stage/collision.h"
 #include "game/sa1/save.h"
 #include "game/shared/stage/dust_effect_braking.h"
 #include "game/stage/extra_stage.h"

@@ -4,7 +4,7 @@
 #include "multi_sio.h"
 #include "sprite.h"
 #include "task.h"
-#include "game/stage/stage.h"
+#include "game/shared/stage/stage.h"
 #include "game/sa2/ui/course_select.h"
 #include "game/multiplayer/results.h"
 #include "game/multiplayer/multipak_connection.h"

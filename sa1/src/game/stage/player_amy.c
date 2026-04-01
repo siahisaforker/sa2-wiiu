@@ -3,7 +3,7 @@
 #include "trig.h"
 #include "malloc_vram.h"
 #include "lib/m4a/m4a.h"
-#include "game/shared/amy_attack_heart_effect.h"
+#include "game/shared/stage/amy_attack_heart_effect.h"
 #include "game/globals.h"
 #include "game/types/player.h"
 #include "game/shared/stage/dust_effect_braking.h"

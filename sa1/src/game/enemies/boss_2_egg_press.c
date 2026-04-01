@@ -2,7 +2,7 @@
 #include "trig.h"
 #include "malloc_vram.h"
 #include "lib/m4a/m4a.h"
-#include "game/sa1_sa2_shared/collision.h"
+#include "game/shared/stage/collision.h"
 #include "game/types/player.h"
 #include "game/types/entity.h"
 #include "game/enemies/bosses_shared.h"

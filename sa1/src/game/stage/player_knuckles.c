@@ -12,7 +12,7 @@
 #include "game/sa1/stage/player_controls.h"
 #include "game/shared/stage/terrain_collision.h"
 #include "game/shared/stage/underwater_effects.h"
-#include "game/water_effects.h"
+#include "game/shared/stage/water_effects.h"
 
 #include "constants/animations.h"
 #include "constants/char_states.h"
