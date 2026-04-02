@@ -63,7 +63,7 @@ SECTIONS {
         src/game/shared/stage/mp_finish.o(.text);
     
         src/game/shared/stage/pause_menu.o(.text);
-        src/game/sa1/stage/mp_results_2.o(.text);
+        src/game/shared/collect_rings/results.o(.text);
         src/game/sa1/stage/mp_hud.o(.text);
         src/game/sa1/stage/mystery_itembox.o(.text);
         src/game/sa1/stage/mp_unk_0.o(.text);
@@ -103,8 +103,8 @@ SECTIONS {
         src/game/sa1/stage/enemies/boss_x2_egg_drillster.o(.text);
         src/game/sa1/stage/enemies/boss_x3_egg_x.o(.text);
 
-        src/game/multiplayer/chao_message.o(.text);
-        src/game/multiplayer/communication_outcome.o(.text);
+        src/game/sa1/multiplayer/chao_message.o(.text);
+        src/game/shared/multiplayer/communication_outcome.o(.text);
 
         src/game/shared/stage/amy_attack_heart_effect.o(.text);
         src/game/shared/stage/music_manager.o(.text);
@@ -333,7 +333,7 @@ SECTIONS {
         src/game/sa1/stage/mp_results_b.o(.rodata);
         src/game/sa1/stage/mp_results.o(.rodata);
         src/game/shared/stage/mp_finish.o(.rodata);
-        src/game/multiboot/collect_rings/time_display.o(.rodata);
+        src/game/sa1/stage/mp_hud.o(.rodata);
         src/game/sa1/stage/mystery_itembox.o(.rodata);
         src/game/sa1/stage/interactables/spring.o(.rodata);
         src/game/sa1/stage/interactables/platform_thin.o(.rodata);
@@ -355,7 +355,7 @@ SECTIONS {
         data/data_0_3.o(.rodata);
         src/data/tilemap_data_2.o(.rodata);
         data/data_0_3_2.o(.rodata);
-        src/game/multiplayer/communication_outcome.o(.rodata);
+        src/game/shared/multiplayer/communication_outcome.o(.rodata);
         src/game/shared/stage/amy_attack_heart_effect.o(.rodata);
         src/game/shared/stage/music_manager.o(.rodata);
         src/game/shared/stage/stage.o(.rodata);

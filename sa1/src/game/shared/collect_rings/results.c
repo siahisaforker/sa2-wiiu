@@ -6,9 +6,12 @@
 #include "sio32_multi_load.h" // for SIO32ML_BLOCK_SIZE
 #include "lib/m4a/m4a.h"
 #include "data/sprite_tables.h"
-#include "game/multiboot/connection.h"
-#include "game/multiplayer/communication_outcome.h"
-#include "game/multiplayer/multipak_connection.h"
+#if (GAME == GAME_SA1)
+#include "game/sa1/menus/mp_mode_select_2.h"
+#elif (GAME == GAME_SA2)
+#include "game/sa2/collect_rings/singlepak_connection.h"
+#endif
+#include "game/shared/multiplayer/communication_outcome.h"
 #include "game/globals.h"
 #include "game/types/player.h"
 #include "game/sa1/save.h"
@@ -72,7 +75,7 @@ void LinkCommunicationError(void)
 }
 
 // (98.42%) https://decomp.me/scratch/sWmIY
-NONMATCH("asm/non_matching/game/multiplayer/results_2__CreateMultiplayerSinglePakResultsScreen.inc",
+NONMATCH("asm/non_matching/game/sa1/stage/results_2__CreateMultiplayerSinglePakResultsScreen.inc",
          void CreateMultiplayerSinglePakResultsScreen(u32 a))
 {
     Background *bg;
@@ -596,7 +599,7 @@ void SA2_LABEL(sub_808267C)(void)
 
 #if (GAME == GAME_SA1)
 // (99.30%) https://decomp.me/scratch/yvxpr
-NONMATCH("asm/non_matching/game/multiplayer/results_2__sa2__sub_8082788.inc", void SA2_LABEL(sub_8082788)(void))
+NONMATCH("asm/non_matching/game/sa1/stage/results_2__sa2__sub_8082788.inc", void SA2_LABEL(sub_8082788)(void))
 #else
 void SA2_LABEL(sub_8082788)(void)
 #endif

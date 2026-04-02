@@ -4,7 +4,7 @@
 #include "data/ui_graphics.h"
 #include "game/sa1/ui/character_select.h"
 #include "game/gTask_03006240.h"
-#include "game/multiplayer/multipak_connection.h"
+#include "game/shared/multiplayer/communication_outcome.h"
 #include "game/globals.h"
 #include "game/sa1/save.h"
 #include "game/shared/stage/stage.h"

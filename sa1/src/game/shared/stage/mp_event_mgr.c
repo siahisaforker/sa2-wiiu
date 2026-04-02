@@ -220,7 +220,7 @@ void ReceiveRoomEvent_ItemEffect(union MultiSioData *recv, u8 i)
 }
 
 // (96.15%) https://decomp.me/scratch/LMpNt
-NONMATCH("asm/non_matching/game/multiplayer/evt_mgr__ReceiveRoomEvent_ReachedStageGoal.inc",
+NONMATCH("asm/non_matching/game/shared/stage/evt_mgr__ReceiveRoomEvent_ReachedStageGoal.inc",
          void ReceiveRoomEvent_ReachedStageGoal(union MultiSioData *recv, u8 i))
 {
     u32 j;

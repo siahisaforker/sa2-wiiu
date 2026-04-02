@@ -4,7 +4,7 @@
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/camera.h"
 
-#include "game/multiboot/collect_rings/time_display.h"
+#include "game/sa2/collect_rings/time_display.h"
 #include "game/sa2/stage/interactables/collect_rings_lap_trigger.h"
 #include "game/types/entity.h"
 #include "sprite.h"

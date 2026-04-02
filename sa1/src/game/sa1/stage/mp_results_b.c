@@ -4,7 +4,7 @@
 #include "lib/m4a/m4a.h"
 #include "game/sa1/ui/character_select.h"
 #include "game/sa1/ui/course_select.h"
-#include "game/multiplayer/multipak_connection.h"
+#include "game/shared/multiplayer/communication_outcome.h"
 #include "game/globals.h"
 #include "game/sa1/save.h"
 
@@ -218,7 +218,7 @@ void sub_8018AE0()
 }
 
 // (97.44%) https://decomp.me/scratch/nj1HT
-NONMATCH("asm/non_matching/game/multiplayer/results_b__Task_8018ECC.inc", void Task_8018ECC(void))
+NONMATCH("asm/non_matching/game/sa1/stage/results_b__Task_8018ECC.inc", void Task_8018ECC(void))
 {
     Sprite *s;
     s32 temp_r1_5;
@@ -572,7 +572,7 @@ void Task_8019348(void)
 }
 
 // (99.42%) https://decomp.me/scratch/2e0s2
-NONMATCH("asm/non_matching/game/multiplayer/results_b__Task_80196FC.inc", void Task_80196FC(void))
+NONMATCH("asm/non_matching/game/sa1/stage/results_b__Task_80196FC.inc", void Task_80196FC(void))
 {
     s32 spC = 1;
     u8 sp8[2] = { 0 };

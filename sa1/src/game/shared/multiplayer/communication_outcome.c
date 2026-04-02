@@ -10,8 +10,7 @@
 #include "game/sa1/ui/character_select.h"
 #include "game/sa1/save.h"
 #include "game/sa1/menus/title_screen.h"
-#include "game/multiplayer/communication_outcome.h"
-#include "game/multiplayer/multipak_connection.h"
+#include "game/shared/multiplayer/communication_outcome.h"
 #if (GAME == GAME_SA1)
 #include "game/sa1/stage/mp_results.h"
 #endif

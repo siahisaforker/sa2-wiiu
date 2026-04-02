@@ -8,7 +8,6 @@
 
 #include "game/sa1/menus/title_screen.h"
 #include "game/sa1/menus/options_screen.h"
-#include "game/multiboot/connection.h"
 
 #include "game/globals.h"
 #include "game/types/player.h"
@@ -28,6 +27,9 @@
 
 #if (GAME == GAME_SA1)
 #include "game/gTask_03006240.h"
+#include "game/sa1/menus/mp_mode_select_2.h"
+#elif (GAME == GAME_SA2)
+#include "game/sa2/collect_rings/singlepak_connection.h"
 #endif
 
 #if TAS_TESTING

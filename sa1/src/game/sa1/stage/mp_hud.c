@@ -22,7 +22,11 @@ typedef struct ChaoHuntHUD {
 void Task_ChaoHuntHUD(void);
 void TaskDestructor_ChaoHuntHUD(struct Task *t);
 
-extern const u8 SA2_LABEL(gUnknown_080E0234)[60];
+const u8 SA2_LABEL(gUnknown_080E0234)[] = {
+    0,   2,   3,   5,   7,   8,   16,  18,  19,  21,  23,  24,  32,  34,  35,  37,  39,  40,  48,  50,
+    51,  53,  55,  56,  64,  66,  67,  69,  71,  72,  80,  82,  83,  85,  87,  88,  96,  98,  99,  101,
+    103, 104, 112, 114, 115, 117, 119, 120, 128, 130, 131, 133, 135, 136, 144, 146, 147, 149, 151, 152,
+};
 
 void CreateChaoHuntHUD(void)
 {
@@ -97,7 +101,7 @@ void CreateChaoHuntHUD(void)
 }
 
 // (84.64%) https://decomp.me/scratch/y4y6F
-NONMATCH("asm/non_matching/game/multiplayer/results_2__Task_ChaoHuntHUD.inc", void Task_ChaoHuntHUD(void))
+NONMATCH("asm/non_matching/game/sa1/stage/results_2__Task_ChaoHuntHUD.inc", void Task_ChaoHuntHUD(void))
 {
     ChaoHuntHUD *hud;
     Sprite *s0;

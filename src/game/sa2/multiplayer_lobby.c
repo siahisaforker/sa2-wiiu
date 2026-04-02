@@ -8,7 +8,7 @@
 #include "constants/songs.h"
 #include "game/sa2/save.h"
 #include "malloc_vram.h"
-#include "game/multiboot/connection.h"
+#include "game/sa2/collect_rings/singlepak_connection.h"
 #include "game/sa2/title_screen.h"
 #include "game/sa2/ui/character_select.h"
 

@@ -8,7 +8,7 @@
 #include "game/sa1/ui/course_select.h"
 #include "game/shared/menus/unused_level_select.h"
 #include "game/gTask_03006240.h"
-#include "game/multiplayer/multipak_connection.h"
+#include "game/shared/multiplayer/communication_outcome.h"
 #include "game/sa1/stage/mp_unk_1.h"
 #include "game/globals.h"
 #include "game/shared/stage/player.h"
@@ -368,7 +368,7 @@ void sub_801D0CC(void)
 }
 
 // (93.77%) https://decomp.me/scratch/9u8Fv
-NONMATCH("asm/non_matching/game/multiplayer/unk_1__Task_801D200.inc", void Task_801D200())
+NONMATCH("asm/non_matching/game/sa1/stage/unk_1__Task_801D200.inc", void Task_801D200())
 {
     MPStrc2 *strc;
     s32 sp4;

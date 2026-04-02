@@ -1,16 +1,15 @@
-#ifndef GUARD_MULTIPLAYER_MULTIPAK_CONNECTION_H
-#define GUARD_MULTIPLAYER_MULTIPAK_CONNECTION_H
+#ifndef GUARD_MULTIPLAYER_COMMUNICATION_OUTCOME_H
+#define GUARD_MULTIPLAYER_COMMUNICATION_OUTCOME_H
 
 #include "global.h"
-#include "core.h"
-#include "multi_sio.h"
 
-extern u8 gMultiplayerUnlockedCharacters;
-extern u8 gMultiplayerConnections;
-extern u8 gMultiplayerUnlockedLevels;
+#define OUTCOME_CONNECTION_SUCCESS 0
+#define OUTCOME_CONNECTION_ERROR   1
 
-void StartMultiPakConnect(void);
-void LinkCommunicationError(void);
+void CreateMultipackOutcomeScreen(u8 outcome);
+
+// assumed that this will be implemented somewhere
+extern void LinkCommunicationError(void);
 
 // TOOD: MultiSioHeartBeat
 #define MultiPakHeartbeat()                                                                                                                \
@@ -34,4 +33,4 @@ void LinkCommunicationError(void);
         }                                                                                                                                  \
     })
 
-#endif // GUARD_MULTIPLAYER_MULTIPAK_CONNECTION_H
+#endif // GUARD_MULTIPLAYER_COMMUNICATION_OUTCOME_H

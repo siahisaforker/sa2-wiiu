@@ -2,7 +2,7 @@
 #include "core.h"
 #include "lib/m4a/m4a.h"
 #include "game/sa1/ui/character_select.h"
-#include "game/multiplayer/multipak_connection.h"
+#include "game/shared/multiplayer/communication_outcome.h"
 #include "game/globals.h"
 #include "game/sa1/save.h"
 
@@ -116,7 +116,7 @@ void sub_8018538(void)
 }
 
 // (99.30%) https://decomp.me/scratch/ZiBTK
-NONMATCH("asm/non_matching/game/multiplayer/results__Task_801874C.inc", void Task_801874C())
+NONMATCH("asm/non_matching/game/sa1/stage/results__Task_801874C.inc", void Task_801874C())
 {
     Sprite *s;
     s32 offsetX;

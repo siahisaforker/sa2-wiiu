@@ -14,7 +14,6 @@
 #endif
 
 void SA2_LABEL(sub_8081200)(void);
-void StartSinglePakConnect(void);
 void ShowSinglePakResults(void);
 
 #endif // GUARD_MULTIPLAYER_SINGLEPAK_CONNECTION_H

@@ -5,10 +5,9 @@
 #include "sio32_multi_load.h"
 #include "lib/m4a/m4a.h"
 #include "game/dummy_task.h"
-#include "game/multiboot/collect_rings/results.h"
-#include "game/multiplayer/communication_outcome.h"
+#include "game/shared/collect_rings/results.h"
+#include "game/shared/multiplayer/communication_outcome.h"
 #include "game/sa1/menus/mp_mode_select.h"
-#include "game/multiplayer/multipak_connection.h"
 #include "game/globals.h"
 #include "game/types/camera.h"
 #include "game/types/player.h"
@@ -214,7 +213,7 @@ void SA2_LABEL(sub_8081200)(void)
 }
 
 // (66.97%) https://decomp.me/scratch/876Ux
-NONMATCH("asm/non_matching/game/multiplayer/results_2__sub_800FD9C.inc", void sub_800FD9C(SioMultiplayerScore *data))
+NONMATCH("asm/non_matching/game/sa1/stage/results_2__sub_800FD9C.inc", void sub_800FD9C(SioMultiplayerScore *data))
 {
     struct MultiplayerScore sp00;
     // s32 ip = 0;

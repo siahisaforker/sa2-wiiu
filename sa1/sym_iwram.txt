@@ -48,7 +48,7 @@ src/game/sa1/stage/temporary_sound_play_task.o(.data);
 src/game/sa1/stage/enemies/boss_6_egg_snake.o(COMMON);
 . = 0x00005890; gUnknown_03005890 = .;
 . = 0x000058A8;
-src/game/multiplayer/chao_message.o(.bss);
+src/game/sa1/multiplayer/chao_message.o(.bss);
 src/game/dummy_task.o(.data);
 
 . = 0x000058C0;

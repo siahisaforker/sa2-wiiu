@@ -23,7 +23,7 @@
 #endif
 #include "game/shared/stage/mp_finish.h"
 #include "game/shared/stage/mp_indicators.h"
-#include "game/multiboot/collect_rings/time_display.h"
+#include "game/sa2/collect_rings/time_display.h"
 #include "game/shared/stage/mp_player.h"
 
 #include "lib/m4a/m4a.h"

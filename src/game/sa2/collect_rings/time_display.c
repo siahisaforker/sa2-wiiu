@@ -3,7 +3,7 @@
 #include "flags.h"
 
 #include "game/globals.h"
-#include "game/multiboot/collect_rings/time_display.h"
+#include "game/sa2/collect_rings/time_display.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"

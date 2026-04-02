@@ -9,7 +9,7 @@
 #include "lib/m4a/m4a.h"
 #include "game/sa2/multiplayer/mode_select.h"
 #include "game/sa2/multiplayer/multipak_connection.h"
-#include "game/multiboot/connection.h"
+#include "game/sa2/collect_rings/singlepak_connection.h"
 #include "game/sa2/save.h"
 #include "game/sa2/stage/screen_fade.h"
 #include "game/sa2/stage/boss_results_transition.h"

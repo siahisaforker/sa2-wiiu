@@ -5,9 +5,9 @@
 #include "game/shared/stage/stage.h"
 #include "game/sa2/stage/tilemap_table.h"
 
-#include "game/multiboot/connection.h"
+#include "game/sa2/collect_rings/singlepak_connection.h"
 #include "game/sa2/multiplayer/multipak_connection.h"
-#include "game/multiboot/collect_rings/results.h"
+#include "game/shared/collect_rings/results.h"
 #include "task.h"
 #include "sprite.h"
 #include "data/sprite_data.h"

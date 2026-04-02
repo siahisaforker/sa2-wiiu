@@ -119,12 +119,12 @@ SA2_C_FILES := \
 	sa2/game/globals.c \
 	sa2/game/shared/stage/mp_event_mgr.c \
 	sa2/game/shared/stage/mp_event_recv_mgr.c \
-	sa2/game/multiboot/collect_rings/results.c \
+	sa2/game/shared/collect_rings/results.c \
 	sa2/game/shared/stage/entities_manager.c \
 	sa2/game/shared/stage/collision.c \
 	sa2/game/sa2/stage/mystery_itembox.c \
 	sa2/game/shared/stage/rings_manager.c \
-	sa2/game/multiboot/collect_rings/time_display.c \
+	sa2/game/sa2/collect_rings/time_display.c \
 	sa2/game/shared/stage/mp_indicators.c \
 	sa2/game/shared/stage/mp_player.c \
 	sa2/game/shared/stage/mp_finish.c \
@@ -143,7 +143,7 @@ SA2_C_FILES := \
 	sa2/game/shared/stage/rings_scatter.c \
 	sa2/game/sa2/stage/player_controls.c \
 	sa2/game/shared/stage/stage.c \
-	sa2/game/multiboot/connection.c \
+	sa2/game/sa2/collect_rings/singlepak_connection.c \
 	sa2/game/game.c \
 	sa2/game/dummy_task.c
 

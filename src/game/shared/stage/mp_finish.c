@@ -12,7 +12,7 @@
 #include "game/sa2/multiplayer/results.h"
 #include "game/shared/stage/mp_event_mgr.h"
 
-#include "game/multiboot/collect_rings/results.h"
+#include "game/shared/collect_rings/results.h"
 
 #include "lib/m4a/m4a.h"
 

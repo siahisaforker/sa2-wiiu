@@ -12,7 +12,7 @@
 #include "game/sa1/stage/mp_results.h"
 #include "game/shared/stage/mp_event_mgr.h"
 
-#include "game/multiboot/collect_rings/results.h"
+#include "game/shared/collect_rings/results.h"
 
 #include "lib/m4a/m4a.h"
 
@@ -199,7 +199,7 @@ void SA2_LABEL(TaskDestructor_8019EF4)(struct Task *t)
 #if (GAME == GAME_SA1)
 extern const u8 gUnknown_080BB490[4];
 // (97.32%) https://decomp.me/scratch/nE6RC
-NONMATCH("asm/non_matching/game/multiplayer/finish__CreateMultiplayerFinishHandler.inc", void CreateMultiplayerFinishHandler(void))
+NONMATCH("asm/non_matching/game/shared/stage/finish__CreateMultiplayerFinishHandler.inc", void CreateMultiplayerFinishHandler(void))
 #elif (GAME == GAME_SA2)
 void CreateMultiplayerFinishHandler(void)
 #endif

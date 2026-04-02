@@ -10,8 +10,7 @@
 #include "game/credits.h"
 #include "game/sa1/stage/extra_stage.h"
 #include "game/shared/stage/stage.h"
-#include "game/multiplayer/communication_outcome.h"
-#include "game/multiplayer/multipak_connection.h"
+#include "game/shared/multiplayer/communication_outcome.h"
 #include "game/sa1/stage/mp_results.h"
 
 #if (GAME == GAME_SA2)

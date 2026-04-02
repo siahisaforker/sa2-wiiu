@@ -6,7 +6,7 @@
 #include "lib/m4a/m4a.h"
 #include "data/ui_graphics.h"
 #include "game/gTask_03006240.h"
-#include "game/multiplayer/multipak_connection.h"
+#include "game/shared/multiplayer/communication_outcome.h"
 #include "game/globals.h"
 #include "game/sa1/save.h"
 #include "game/sa1/menus/title_screen.h"
@@ -160,7 +160,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
 }
 
 // (99.02%) https://decomp.me/scratch/HVYh9
-NONMATCH("asm/non_matching/game/multiplayer/chao_message__sub_803AB60.inc", void sub_803AB60(ChaoMessage *message))
+NONMATCH("asm/non_matching/game/sa1/multiplayer/chao_message__sub_803AB60.inc", void sub_803AB60(ChaoMessage *message))
 {
     u8 sp0;
     u8 sp4;

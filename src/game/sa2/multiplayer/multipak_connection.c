@@ -5,7 +5,7 @@
 #include "multi_sio.h"
 
 #include "game/sa2/multiplayer/multipak_connection.h"
-#include "game/sa2/multiplayer/communication_outcome.h"
+#include "game/shared/multiplayer/communication_outcome.h"
 #include "game/sa2/multiplayer/mode_select.h"
 
 #include "data/sprite_data.h"

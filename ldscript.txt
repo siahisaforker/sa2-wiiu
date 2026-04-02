@@ -62,7 +62,7 @@ SECTIONS
         src/game/sa2/options_screen.o(.data);
         src/game/sa2/special_stage/utils.o(.data);
         src/game/sa2/save.o(.data);
-        src/game/multiboot/collect_rings/time_display.o(.data);
+        src/game/sa2/collect_rings/time_display.o(.data);
         src/game/math.o(.data);
         src/game/sa2/stage/mp_attack_1_effect.o(.data);
         src/game/sa2/bg_palette_effects.o(.data);
@@ -215,7 +215,7 @@ SECTIONS
         /* multiplayer_screens */
         src/game/sa2/multiplayer/mode_select.o(.text);
         src/game/sa2/multiplayer/multipak_connection.o(.text);
-        src/game/sa2/multiplayer/communication_outcome.o(.text);
+        src/game/shared/multiplayer/communication_outcome.o(.text);
         src/game/sa2/multiplayer/results.o(.text);
         src/game/sa2/multiplayer/team_play.o(.text);
 
@@ -289,9 +289,9 @@ SECTIONS
         src/game/sa2/stage/interactables/note_particle.o(.text);
         src/game/sa2/stage/interactables/special_ring.o(.text);
 
-        src/game/multiboot/connection.o(.text);
-        src/game/multiboot/collect_rings/results.o(.text);
-        src/game/multiboot/collect_rings/time_display.o(.text);
+        src/game/sa2/collect_rings/singlepak_connection.o(.text);
+        src/game/shared/collect_rings/results.o(.text);
+        src/game/sa2/collect_rings/time_display.o(.text);
 
         src/game/math.o(.text);
 
@@ -438,7 +438,7 @@ SECTIONS
         src/game/sa2/stage/enemies/geji_geji.o(.rodata);
         src/game/sa2/multiplayer/mode_select.o(.rodata);
         src/game/sa2/multiplayer/multipak_connection.o(.rodata);
-        src/game/sa2/multiplayer/communication_outcome.o(.rodata);
+        src/game/shared/multiplayer/communication_outcome.o(.rodata);
         src/game/sa2/multiplayer/results.o(.rodata);
         src/game/sa2/multiplayer/team_play.o(.rodata);
         src/game/sa2/stage/interactables/leaf_forest/decoration.o(.rodata);
@@ -471,8 +471,8 @@ SECTIONS
         src/game/sa2/stage/interactables/techno_base/spike_platform.o(.rodata);
         src/game/sa2/stage/interactables/sky_canyon/whirlwind.o(.rodata);
         src/game/sa2/stage/interactables/note_particle.o(.rodata);
-        src/game/multiboot/connection.o(.rodata);
-        src/game/multiboot/collect_rings/time_display.o(.rodata);
+        src/game/sa2/collect_rings/singlepak_connection.o(.rodata);
+        src/game/sa2/collect_rings/time_display.o(.rodata);
         src/game/math.o(.rodata);
         src/game/sa2/stage/mystery_itembox.o(.rodata);
         src/game/sa2/stage/race_progress.o(.rodata);

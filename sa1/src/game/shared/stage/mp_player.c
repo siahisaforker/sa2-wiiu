@@ -24,7 +24,7 @@
 #elif (GAME == GAME_SA2)
 #include "game/multiplayer/mp_attack_2_effect.h"
 #endif
-#include "game/multiplayer/multipak_connection.h"
+#include "game/shared/multiplayer/communication_outcome.h"
 
 #include "constants/animations.h"
 #include "constants/char_states.h"
@@ -255,7 +255,7 @@ void CreateMultiplayerPlayer(u8 id)
 
 // TODO: Match and merge the SA1 and SA2 versions.
 // (89.44%) https://decomp.me/scratch/ldYoR
-NONMATCH("asm/non_matching/game/multiplayer/sa1_mp_player__Task_CreateMultiplayerPlayer.inc", void Task_CreateMultiplayerPlayer())
+NONMATCH("asm/non_matching/game/shared/stage/sa1_mp_player__Task_CreateMultiplayerPlayer.inc", void Task_CreateMultiplayerPlayer())
 {
     SpriteTransform *tf;
     MultiplayerPlayer *sp4;
@@ -585,9 +585,9 @@ END_NONMATCH
 #elif (GAME == GAME_SA2)
 #ifndef COLLECT_RINGS_ROM
 // around 70%: https://decomp.me/scratch/KNjEN
-NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPlayer.inc", void Task_CreateMultiplayerPlayer(void))
+NONMATCH("asm/non_matching/game/sa1/stage/mp_player__Task_CreateMultiplayerPlayer.inc", void Task_CreateMultiplayerPlayer(void))
 #else
-NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPlayer__CollectRings.inc",
+NONMATCH("asm/non_matching/game/sa1/stage/mp_player__Task_CreateMultiplayerPlayer__CollectRings.inc",
          void Task_CreateMultiplayerPlayer(void))
 #endif
 {
@@ -1378,7 +1378,7 @@ void SA2_LABEL(sub_801707C)(void)
 // NOTE: Matches in SA2!
 // (99.36%) https://decomp.me/scratch/cjmw6
 #if (GAME == GAME_SA1)
-NONMATCH("asm/non_matching/game/multiplayer/sa1_mp_player__sa2__sub_8017670.inc", void SA2_LABEL(sub_8017670)(void))
+NONMATCH("asm/non_matching/game/shared/stage/sa1_mp_player__sa2__sub_8017670.inc", void SA2_LABEL(sub_8017670)(void))
 #else
 void SA2_LABEL(sub_8017670)(void)
 #endif

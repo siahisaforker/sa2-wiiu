@@ -8,7 +8,7 @@
 
 #include "game/sa2/title_screen.h"
 #include "game/sa2/options_screen.h"
-#include "game/multiboot/connection.h"
+#include "game/sa2/collect_rings/singlepak_connection.h"
 
 #include "game/shared/stage/entities_manager.h"
 
@@ -22,7 +22,7 @@
 #include "game/shared/stage/rings_scatter.h"
 
 #if COLLECT_RINGS_ROM
-#include "game/multiboot/collect_rings/results.h"
+#include "game/shared/collect_rings/results.h"
 #endif
 
 #include "game/shared/stage/water_effects.h"
