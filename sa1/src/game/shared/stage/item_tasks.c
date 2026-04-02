@@ -305,7 +305,7 @@ void sub_804BABC(void)
 }
 
 // (98.30%) https://decomp.me/scratch/R97rp
-NONMATCH("asm/non_matching/game/stage/Item_Tasks__Task_Item_Invincibility.inc", void Task_Item_Invincibility(void))
+NONMATCH("asm/non_matching/game/sa1/stage/Item_Tasks__Task_Item_Invincibility.inc", void Task_Item_Invincibility(void))
 {
     struct Task *t = gCurTask;
     s32 pid = ITEMTASK_GET_PLAYER_NUM(t);

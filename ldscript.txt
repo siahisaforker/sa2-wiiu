@@ -101,7 +101,7 @@ SECTIONS
         src/game/shared/stage/rings_manager.o(.text);
         src/game/shared/stage/entities_manager.o(.text);
         src/game/shared/stage/palette_loader.o(.text);
-        src/game/shared/stage/unused_level_select.o(.text);
+        src/game/shared/menus/unused_level_select.o(.text);
         src/game/shared/stage/spot_light_beam_task.o(.text);
         src/game/shared/stage/enemy_defeat_score.o(.text);
         src/game/shared/stage/demo_manager.o(.text);
@@ -379,7 +379,7 @@ SECTIONS
         
         src/game/shared/stage/rings_manager.o(.rodata);
         src/game/shared/stage/entities_manager.o(.rodata);
-        src/game/shared/stage/unused_level_select.o(.rodata);
+        src/game/shared/menus/unused_level_select.o(.rodata);
         src/game/shared/stage/unused_flash_task.o(.rodata);
         src/game/shared/stage/pause_menu.o(.rodata);
         src/game/sa2/stage/itembox.o(.rodata);

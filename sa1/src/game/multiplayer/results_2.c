@@ -12,7 +12,7 @@
 #include "game/globals.h"
 #include "game/types/player.h"
 #include "game/sa1/save.h"
-#include "game/stage/tilemap_table.h"
+#include "game/sa1/stage/tilemap_table.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

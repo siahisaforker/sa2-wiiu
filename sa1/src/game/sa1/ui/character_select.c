@@ -10,8 +10,8 @@
 #include "game/shared/stage/stage.h"
 #include "game/sa1/stage/stage_ui.h"
 #include "game/sa1/save.h"
-#include "game/time_attack/menu.h"
-#include "game/sa1/title_screen.h"
+#include "game/sa1/menus/time_attack.h"
+#include "game/sa1/menus/title_screen.h"
 
 #include "constants/characters.h"
 #include "constants/songs.h"

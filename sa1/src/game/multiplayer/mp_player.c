@@ -7,7 +7,7 @@
 #include "game/globals.h"
 #include "game/shared/stage/collision.h"
 
-#include "game/stage/spawn_positions.h"
+#include "game/sa1/stage/spawn_positions.h"
 #include "game/shared/stage/terrain_collision.h"
 #include "game/shared/stage/stage.h"
 #include "game/shared/stage/player.h"

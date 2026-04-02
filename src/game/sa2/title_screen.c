@@ -27,7 +27,7 @@
 
 // Temp hack to allow playing the special stages from the chao garden
 #if PORTABLE
-#include "game/shared/stage/unused_level_select.h"
+#include "game/shared/menus/unused_level_select.h"
 #endif
 
 #if (GAME == GAME_SA1)

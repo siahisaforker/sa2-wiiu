@@ -6,7 +6,7 @@
 #include "bg_triangles.h"
 #include "data/ui_graphics.h"
 #include "game/sa1/ui/course_select.h"
-#include "game/shared/stage/unused_level_select.h"
+#include "game/shared/menus/unused_level_select.h"
 #include "game/gTask_03006240.h"
 #include "game/multiplayer/multipak_connection.h"
 #include "game/multiplayer/unk_1.h"

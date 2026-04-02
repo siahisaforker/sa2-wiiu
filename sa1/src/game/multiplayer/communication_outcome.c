@@ -9,14 +9,14 @@
 
 #include "game/sa1/ui/character_select.h"
 #include "game/sa1/save.h"
-#include "game/sa1/title_screen.h"
+#include "game/sa1/menus/title_screen.h"
 #include "game/multiplayer/communication_outcome.h"
 #include "game/multiplayer/multipak_connection.h"
 #if (GAME == GAME_SA1)
 #include "game/multiplayer/results.h"
 #endif
 
-#include "game/stage/tilemap_table.h"
+#include "game/sa1/stage/tilemap_table.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

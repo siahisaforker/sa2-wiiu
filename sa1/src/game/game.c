@@ -6,8 +6,8 @@
 #include "game/game.h"
 #include "game/sa1/save.h"
 
-#include "game/sa1/title_screen.h"
-#include "game/options_screen.h"
+#include "game/sa1/menus/title_screen.h"
+#include "game/sa1/menus/options_screen.h"
 #include "game/multiboot/connection.h"
 
 #include "game/globals.h"
@@ -15,7 +15,7 @@
 //#include "game/shared/stage/entities_manager.h"
 
 #include "game/sa1/ui/character_select.h"
-#include "game/stage/tilemap_table.h"
+#include "game/sa1/stage/tilemap_table.h"
 #include "game/shared/stage/stage.h"
 //#include "game/shared/stage/player.h"
 #include "game/shared/stage/camera.h"

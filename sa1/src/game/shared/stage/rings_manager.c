@@ -104,7 +104,7 @@ void CreateStageRingsManager(void)
 
 // SA1 version has support for "Cheat Code Tails"
 // (75.43%) https://decomp.me/scratch/e9Wqi
-NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgrMain(void))
+NONMATCH("asm/non_matching/game/sa1/stage/Task_RingsMgrMain.inc", void Task_RingsMgrMain(void))
 {
     // oam sub-frame ID?
     u8 sp1C = 0;

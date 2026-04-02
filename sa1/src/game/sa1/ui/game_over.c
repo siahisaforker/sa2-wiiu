@@ -9,12 +9,12 @@
 #include "game/globals.h"
 #include "game/types/camera.h"
 #if DEBUG
-#include "game/shared/stage/unused_level_select.h"
+#include "game/shared/menus/unused_level_select.h"
 #endif
 #include "game/sa1/save.h"
 #include "game/shared/stage/stage.h"
 #include "game/sa1/stage/stage_ui.h"
-#include "game/sa1/title_screen.h"
+#include "game/sa1/menus/title_screen.h"
 #include "data/ui_graphics.h"
 
 #include "constants/animations.h"

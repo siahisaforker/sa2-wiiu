@@ -11,7 +11,7 @@
 #include "game/shared/stage/player.h"
 #include "game/sa1/stage/player_controls.h"
 #include "game/sa1/stage/player_super_sonic.h"
-#include "game/enemies/boss_xtra_super_egg_robo.h"
+#include "game/sa1/stage/enemies/boss_xtra_super_egg_robo.h"
 #include "game/shared/stage/rings_scatter.h"
 #include "game/shared/stage/terrain_collision.h"
 #include "game/shared/stage/underwater_effects.h"
@@ -22,7 +22,7 @@
 #include "constants/vram_hardcoded.h"
 
 /* Start of Super Sonic ? */
-#include "game/enemies/boss_xtra_super_egg_robo.h"
+#include "game/sa1/stage/enemies/boss_xtra_super_egg_robo.h"
 
 void Player_SuperSonic_80499CC(Player *p);
 void sub_8049D7C(Player *p);
@@ -265,7 +265,7 @@ void Player_SuperSonic_8049AB8(Player *p)
 }
 
 // (87.78%) https://decomp.me/scratch/wiHzX
-NONMATCH("asm/non_matching/game/stage/Player__sub_8049BAC.inc", bool32 sub_8049BAC(Player *p))
+NONMATCH("asm/non_matching/game/sa1/stage/Player__sub_8049BAC.inc", bool32 sub_8049BAC(Player *p))
 {
     if ((p->SA2_LABEL(unk61) == 0) || (--p->SA2_LABEL(unk61) == 0)) {
         if (p->frameInput & gPlayerControls.attack) {

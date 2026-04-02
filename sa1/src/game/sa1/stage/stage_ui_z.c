@@ -78,7 +78,7 @@ bool32 sub_8054A54(void)
 }
 
 // (71.41%) https://decomp.me/scratch/T4csx
-NONMATCH("asm/non_matching/game/stage/intro__LoadStageIntroGraphics.inc", void LoadStageIntroGraphics(StrcStack *param0))
+NONMATCH("asm/non_matching/game/sa1/stage/intro__LoadStageIntroGraphics.inc", void LoadStageIntroGraphics(StrcStack *param0))
 {
     Strc_80528AC sp00; // size: 0x30
     s32 act = (gCurrentLevel & 0x1);
