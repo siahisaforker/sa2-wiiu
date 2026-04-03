@@ -15,7 +15,7 @@
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/camera.h"
 
-#include "data/sprite_data.h"
+#include "data/sa2/sprite_data.h"
 
 #include "constants/animations.h"
 #include "constants/anim_commands.h"

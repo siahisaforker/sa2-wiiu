@@ -10,7 +10,7 @@
 #include "game/shared/collect_rings/results.h"
 #include "task.h"
 #include "sprite.h"
-#include "data/sprite_data.h"
+#include "data/sa2/sprite_data.h"
 #include "bg_triangles.h"
 #include "game/sa2/save.h"
 #include "game/sa2/title_screen.h"
@@ -23,7 +23,7 @@
 #include "game/shared/stage/mp_player.h"
 #endif
 
-#include "data/collect_rings.h"
+#include "data/sa2/collect_rings.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

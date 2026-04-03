@@ -23,7 +23,7 @@
 #include "game/sa2/title_screen.h"
 #include "game/dummy_task.h"
 
-#include "data/collect_rings.h"
+#include "data/sa2/collect_rings.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

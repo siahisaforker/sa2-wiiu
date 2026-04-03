@@ -10,7 +10,7 @@
 #include "game/types/entity.h"
 #include "game/sa2/stage/interactables/leaf_forest/platform_crumbling.h"
 
-#include "data/sprite_data.h"
+#include "data/sa2/sprite_data.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"

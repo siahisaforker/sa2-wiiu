@@ -23,7 +23,7 @@
 #include "game/sa2/ui/time_attack_mode_select.h"
 #include "game/types/camera.h" // TILE_WIDTH
 
-#include "data/recordings.h"
+#include "data/sa2/recordings.h"
 
 // Temp hack to allow playing the special stages from the chao garden
 #if PORTABLE
@@ -246,7 +246,7 @@ static const TileInfo sMenuTiles[] = {
     { 0x28, SA2_ANIM_SOME_JAPANESE_TXT, SA2_ANIM_VARIANT_SOME_JAPANESE_TXT_7 },
 };
 
-static const ColorRaw sWavesBrightnessPalette[] = INCPAL("graphics/title_screen__waves_brightness.pal");
+static const ColorRaw sWavesBrightnessPalette[] = INCPAL("graphics/sa2/title_screen__waves_brightness.pal");
 
 // Each value is scan line which the brightness should be increased
 // 0 being top 160 being bottom
