@@ -549,7 +549,7 @@ else ifeq ($(PLATFORM),sdl_psp)
 	@-rm -f $(BUILD_NAME).psp_strip.elf
 else ifeq ($(PLATFORM),ps2)
 	@echo Creating $(ROM) from $(ELF)
-	@cp -r ps2/ntsc $(OBJ_DIR)/iso
+	@cp -r ps2/$(BUILD_NAME)/ntsc $(OBJ_DIR)/iso
 	@cp $< $(OBJ_DIR)/iso/$(PS2_GAME_CODE)
 	@mkisofs -o $(ROM) $(OBJ_DIR)/iso/
 else
