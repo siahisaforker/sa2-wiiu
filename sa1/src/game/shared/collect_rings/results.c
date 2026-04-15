@@ -74,9 +74,7 @@ void LinkCommunicationError(void)
     CreateMultipackOutcomeScreen(OUTCOME_CONNECTION_ERROR);
 }
 
-// (98.42%) https://decomp.me/scratch/sWmIY
-NONMATCH("asm/non_matching/game/sa1/stage/results_2__CreateMultiplayerSinglePakResultsScreen.inc",
-         void CreateMultiplayerSinglePakResultsScreen(u32 a))
+void CreateMultiplayerSinglePakResultsScreen(u32 a)
 {
     Background *bg;
     Sprite *s;
@@ -163,11 +161,12 @@ NONMATCH("asm/non_matching/game/sa1/stage/results_2__CreateMultiplayerSinglePakR
 
     for (i = 0; i < 10; i++) {
         void *vram = OBJ_VRAM0 + 0x2000 + (i * 0x80);
+        u32 oamFlags = SPRITE_OAM_ORDER(4); // required to be here for match
         s = &resultsScreen->unk160[i];
         s->x = 0;
         s->y = 0;
         s->graphics.dest = vram;
-        s->oamFlags = SPRITE_OAM_ORDER(4);
+        s->oamFlags = oamFlags;
         s->graphics.size = 0;
         s->graphics.anim = 0x380;
         s->variant = (i + 3);
@@ -226,7 +225,6 @@ NONMATCH("asm/non_matching/game/sa1/stage/results_2__CreateMultiplayerSinglePakR
     gBldRegs.bldCnt = 0xFF;
     gBldRegs.bldY = 0x10;
 }
-END_NONMATCH
 
 void SA2_LABEL(Task_808207C)(void)
 {
