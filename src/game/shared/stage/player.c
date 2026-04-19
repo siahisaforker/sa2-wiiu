@@ -498,7 +498,7 @@ const u16 sCharStateAnimInfo[][2] = {
     [CHARSTATE_WALLRUN_TO_WALL] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_73, CHARACTER_SHARED_ANIM), 1 },
     [CHARSTATE_WALLRUN_ON_WALL] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_73, CHARACTER_SHARED_ANIM), 2 },
     [CHARSTATE_ICE_SLIDE] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_75, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_WALK_B] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_WALK, CHARACTER_SHARED_ANIM), 2 },
+    [CHARSTATE_BOUNCE] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_WALK, CHARACTER_SHARED_ANIM), 2 },
     [CHARSTATE_LAUNCHER_IN_CART] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_71, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_LAUNCHER_IN_AIR] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_71, CHARACTER_SHARED_ANIM), 1 },
     [CHARSTATE_POLE] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_72, CHARACTER_SHARED_ANIM), 0 },
@@ -3914,83 +3914,95 @@ NONMATCH("asm/non_matching/game/sa1/stage/Player__sub_8044434.inc", bool32 sub_8
 END_NONMATCH
 #endif // (GAME == GAME_SA1)
 
-// ALIGNED UP TO HERE
 void Player_AirInputControls(Player *p)
 {
     s32 r5 = p->acceleration * 2;
+#if (GAME == GAME_SA1)
+    s32 r6 = p->maxSpeed;
+#elif (GAME == GAME_SA2)
     s32 r6 = p->topSpeed;
-
-    if ((p->charState != CHARSTATE_HIT_AIR) && !(p->moveState & MOVESTATE_FLIP_WITH_MOVE_DIR)) {
-        s16 qAirSpeedS;
-        u16 qAirSpeedU = p->qSpeedAirX;
-
-        if (p->heldInput & DPAD_LEFT) {
-#if (GAME == GAME_SA1) && !defined(NON_MATCHING)
-            qAirSpeedS = qAirSpeedU;
 #endif
-            if ((p->charState != CHARSTATE_WALK_B) && !(p->moveState & MOVESTATE_2000)) {
-                p->moveState |= MOVESTATE_FACING_LEFT;
-            }
 
-            qAirSpeedS = qAirSpeedU;
-            qAirSpeedU = qAirSpeedS - r5;
-            qAirSpeedS = qAirSpeedU;
+    if ((p->charState != CHARSTATE_HIT_AIR)) {
+        if (!(p->moveState & MOVESTATE_FLIP_WITH_MOVE_DIR)) {
+            s16 qAirSpeedS;
+            u16 qAirSpeedU = p->qSpeedAirX;
 
-            if (qAirSpeedS < -r6) {
-                qAirSpeedU = qAirSpeedS + r5;
+            if (p->heldInput & DPAD_LEFT) {
+#if (GAME == GAME_SA1) && !defined(NON_MATCHING)
                 qAirSpeedS = qAirSpeedU;
-
-                if (qAirSpeedS > -r6) {
-                    qAirSpeedU = -r6;
+#endif
+                if ((p->charState != CHARSTATE_BOUNCE)
+#if (GAME == GAME_SA2)
+                    && !(p->moveState & MOVESTATE_2000)
+#endif
+                ) {
+                    p->moveState |= MOVESTATE_FACING_LEFT;
                 }
-            }
-        } else if (p->heldInput & DPAD_RIGHT) {
-            if ((p->charState != CHARSTATE_WALK_B) && !(p->moveState & MOVESTATE_2000)) {
-                p->moveState &= ~MOVESTATE_FACING_LEFT;
-            }
 
-            qAirSpeedS = qAirSpeedU;
-            qAirSpeedU = qAirSpeedS + r5;
-            qAirSpeedS = qAirSpeedU;
-
-            if (qAirSpeedS > r6) {
+                qAirSpeedS = qAirSpeedU;
                 qAirSpeedU = qAirSpeedS - r5;
                 qAirSpeedS = qAirSpeedU;
 
-                if (qAirSpeedS < r6) {
-                    qAirSpeedU = r6;
+                if (qAirSpeedS < -r6) {
+                    qAirSpeedU = qAirSpeedS + r5;
+                    qAirSpeedS = qAirSpeedU;
+
+                    if (qAirSpeedS > -r6) {
+                        qAirSpeedU = -r6;
+                    }
+                }
+            } else if (p->heldInput & DPAD_RIGHT) {
+                if ((p->charState != CHARSTATE_BOUNCE)
+#if (GAME == GAME_SA2)
+                    && !(p->moveState & MOVESTATE_2000)
+#endif
+                ) {
+                    p->moveState &= ~MOVESTATE_FACING_LEFT;
+                }
+
+                qAirSpeedS = qAirSpeedU;
+                qAirSpeedU = qAirSpeedS + r5;
+                qAirSpeedS = qAirSpeedU;
+
+                if (qAirSpeedS > r6) {
+                    qAirSpeedU = qAirSpeedS - r5;
+                    qAirSpeedS = qAirSpeedU;
+
+                    if (qAirSpeedS < r6) {
+                        qAirSpeedU = r6;
+                    }
                 }
             }
-        }
 #if (GAME == GAME_SA1) && !defined(NON_MATCHING)
-        p->qSpeedAirX = (r5 = qAirSpeedU);
+            p->qSpeedAirX = (r5 = qAirSpeedU);
 #else
-        p->qSpeedAirX = qAirSpeedU;
+            p->qSpeedAirX = qAirSpeedU;
 #endif
-    }
+        }
 
 #if (GAME == GAME_SA1)
-    if ((u16)p->qSpeedAirY > (u16)(-Q(67) - 1)) {
-        s16 qSpeedAirX = p->qSpeedAirX;
-        s16 qSpeedAirXFrac = p->qSpeedAirX >> 5;
-        if (qSpeedAirXFrac < 0) {
-            qSpeedAirX -= qSpeedAirXFrac;
-            if (qSpeedAirX > 0) {
-                qSpeedAirX = 0;
+        if ((u16)p->qSpeedAirY > (u16)(-Q(67) - 1)) {
+            s16 qSpeedAirX = p->qSpeedAirX;
+            s16 qSpeedAirXFrac = p->qSpeedAirX >> 5;
+            if (qSpeedAirXFrac < 0) {
+                qSpeedAirX -= qSpeedAirXFrac;
+                if (qSpeedAirX > 0) {
+                    qSpeedAirX = 0;
+                }
+
+                p->qSpeedAirX = qSpeedAirX;
+            } else if (qSpeedAirXFrac > 0) {
+                qSpeedAirX -= qSpeedAirXFrac;
+
+                if (qSpeedAirX < 0)
+                    qSpeedAirX = 0;
+
+                p->qSpeedAirX = qSpeedAirX;
             }
-
-            p->qSpeedAirX = qSpeedAirX;
-        } else if (qSpeedAirXFrac > 0) {
-            qSpeedAirX -= qSpeedAirXFrac;
-
-            if (qSpeedAirX < 0)
-                qSpeedAirX = 0;
-
-            p->qSpeedAirX = qSpeedAirX;
         }
-    }
-}
 #endif
+    }
 }
 
 #if (GAME == GAME_SA1)
@@ -4360,7 +4372,7 @@ void Player_HandleWater(Player *p)
         if (--p->framesUntilDrownCountDecrement < 1) {
             switch (p->secondsUntilDrown--) {
                 case 11:
-                    if (p->playerID == 0) {
+                    if (p->playerID == PLAYER_1) {
                         gMusicManagerState.unk4 = 16;
                     }
                     break;
@@ -4422,11 +4434,11 @@ void Player_HandleWater(Player *p)
         p->secondsUntilDrown = 30;
 
 #if (GAME == GAME_SA1)
-        if (p->playerID == 0) {
+        if (p->playerID == PLAYER_1) {
             m4aSongNumStop(MUS_DROWNING);
         }
 #else
-        if (gMPlayTable[0].info->songHeader == gSongTable[MUS_DROWNING].header && p->playerID == 0) {
+        if (gMPlayTable[0].info->songHeader == gSongTable[MUS_DROWNING].header && p->playerID == PLAYER_1) {
             m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
         }
 #endif
@@ -4453,6 +4465,209 @@ void Player_HandleWater(Player *p)
 }
 #endif
 
+#if (GAME == GAME_SA1)
+void Player_8044D74(Player *p)
+{
+    Sprite *sprBelow = p->stoodObj;
+    CamCoord sprWorldX = gCamera.x + sprBelow->x;
+
+    s32 sprWorldSubOffsetLeft = Q(sprWorldX + sprBelow->hitboxes[0].b.left - p->spriteOffsetX + 1);
+    s32 sprWorldSub2;
+
+    if ((p->qWorldX < sprWorldSubOffsetLeft) && (sprBelow->hitboxes[0].b.left != 0)) {
+        if ((p->moveState & MOVESTATE_FACING_LEFT)) {
+            p->charState = CHARSTATE_12;
+        } else {
+            p->charState = CHARSTATE_13;
+        }
+
+        return;
+    } else {
+        s32 sprWorldSubOffsetRight = Q(sprWorldX + sprBelow->hitboxes[0].b.right + p->spriteOffsetX - 2);
+
+        if ((p->qWorldX > sprWorldSubOffsetRight) && (sprBelow->hitboxes[0].b.right != 0)) {
+            if ((p->moveState & MOVESTATE_FACING_LEFT)) {
+                p->charState = CHARSTATE_13;
+            } else {
+                p->charState = CHARSTATE_12;
+            }
+
+            return;
+        }
+    }
+
+    sprWorldSub2 = Q(sprWorldX + sprBelow->hitboxes[0].b.left - p->spriteOffsetX + 2);
+
+    if ((p->qWorldX < sprWorldSub2) || (p->qWorldX > Q(sprWorldX + sprBelow->hitboxes[0].b.right + p->spriteOffsetX - 3))) {
+        if (p->prevCharState == 12 || p->prevCharState == 13) {
+            // TODO: Are these names accurate, if charState gets get to prevCharState?
+            p->charState = p->prevCharState;
+        }
+    }
+}
+
+void Player_8044E48(Player *p)
+{
+    s32 worldX = I(p->qWorldX);
+    s32 worldY = I(p->qWorldY);
+    s32 res;
+
+    res = SA2_LABEL(sub_801E4E4)(worldY + p->spriteOffsetY, worldX, p->layer, +8, 0, SA2_LABEL(sub_801EE64));
+
+    if (res > 8) {
+        s32 r6;
+        if (GRAVITY_IS_INVERTED) {
+            s32 x, y;
+            s32 x2, y2;
+            y = p->spriteOffsetY;
+            y = worldY - y;
+            x = worldX - 2;
+            r6 = SA2_LABEL(sub_801E4E4)(y, x - p->spriteOffsetX, p->layer, -8, 0, SA2_LABEL(sub_801EE64));
+
+            y2 = p->spriteOffsetY;
+            y2 = worldY - y2;
+            x2 = worldX + 2;
+            res = SA2_LABEL(sub_801E4E4)(y2, x2 + p->spriteOffsetX, p->layer, -8, 0, SA2_LABEL(sub_801EE64));
+        } else {
+            s32 x, y;
+            s32 x2, y2;
+            y = worldY + p->spriteOffsetY;
+            x = worldX - 2;
+            r6 = SA2_LABEL(sub_801E4E4)(y, x - p->spriteOffsetX, p->layer, +8, 0, SA2_LABEL(sub_801EE64));
+
+            y2 = worldY + p->spriteOffsetY;
+            x2 = worldX + 2;
+            res = SA2_LABEL(sub_801E4E4)(y2, x2 + p->spriteOffsetX, p->layer, +8, 0, SA2_LABEL(sub_801EE64));
+        }
+
+        if ((r6 > 8) && (res == 0)) {
+            if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
+                p->charState = CHARSTATE_13;
+            } else {
+                p->charState = CHARSTATE_12;
+            }
+        } else if ((r6 == 0) && (res > 8)) {
+            if ((p->moveState & MOVESTATE_FACING_LEFT)) {
+                p->charState = CHARSTATE_13;
+            } else {
+                p->charState = CHARSTATE_12;
+            }
+        }
+    }
+}
+
+void Player_8044F7C(Player *p)
+{
+    s32 qSpeed;
+    u8 rot;
+
+    if ((p->SA2_LABEL(unk2A) == 0) && (p->charState != CHARSTATE_64) && (p->charState != CHARSTATE_27)) {
+        switch (p->heldInput & DPAD_SIDEWAYS) {
+            case 0: {
+                if (p->qSpeedGround != Q(0)) {
+                    if ((p->charState == CHARSTATE_8) || (p->charState == CHARSTATE_BRAKE) || (p->charState == CHARSTATE_IDLE)) {
+                        p->charState = CHARSTATE_WALK_A;
+
+                        PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
+                    }
+                } else if (!(p->moveState & MOVESTATE_800000)) {
+                    if ((p->character != CHARACTER_AMY) || !(p->moveState & MOVESTATE_200)) {
+
+                        if (p->charState == CHARSTATE_CROUCH) {
+                            p->charState = CHARSTATE_3;
+                        } else if (p->charState == CHARSTATE_LOOK_UP) {
+                            p->charState = CHARSTATE_11;
+                        } else if ((p->charState != CHARSTATE_3) && (p->charState != CHARSTATE_11)) {
+                            p->charState = CHARSTATE_IDLE;
+                        }
+
+                        PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
+                    }
+                }
+
+                if (p->character == CHARACTER_AMY) {
+                    if (p->charState == CHARSTATE_CROUCH) {
+                        qSpeed = p->qSpeedGround;
+                        if (qSpeed > 0) {
+                            qSpeed -= p->deceleration;
+
+                            if (qSpeed < 0) {
+                                qSpeed = 0;
+                            }
+                        } else {
+                            qSpeed += p->deceleration;
+
+                            if ((qSpeed) > 0) {
+                                qSpeed = 0;
+                            }
+                        }
+                        p->qSpeedGround = qSpeed;
+                    }
+                }
+
+            } break;
+
+            case DPAD_LEFT: {
+                Player_8043970(p);
+            } break;
+
+            case DPAD_RIGHT: {
+                Player_8043A2C(p);
+            } break;
+        }
+
+        if ((p->character == CHARACTER_AMY) && (p->moveState & MOVESTATE_200)) {
+            qSpeed = p->qSpeedGround;
+            if (qSpeed == Q(0)) {
+                qSpeed = Q(3);
+                if (p->moveState & MOVESTATE_FACING_LEFT) {
+                    NEGATE(qSpeed);
+                }
+                p->qSpeedGround = qSpeed;
+            }
+        } else {
+            if ((!((p->rotation + Q(0.125)) & 0xC0)) && (p->qSpeedGround == 0)) {
+                p->moveState &= ~MOVESTATE_20;
+
+                if (!(p->moveState & MOVESTATE_800000)) {
+                    if ((p->charState != CHARSTATE_3) && (p->charState != CHARSTATE_11)) {
+                        p->charState = 0;
+                    }
+
+                    if (p->moveState & MOVESTATE_STOOD_ON_OBJ) {
+                        Player_8044D74(p);
+                    } else {
+                        Player_8044E48(p);
+                    }
+                }
+            }
+        }
+    }
+
+    sub_80448D0(p);
+
+    if (!(p->heldInput & DPAD_SIDEWAYS)) {
+        qSpeed = p->qSpeedGround;
+        if (qSpeed > 0) {
+            qSpeed -= Q(8. / 256.);
+            qSpeed = MAX(Q(0), qSpeed);
+            p->qSpeedGround = qSpeed;
+        } else if (qSpeed < 0) {
+            qSpeed += Q(8. / 256.);
+            qSpeed = MIN(Q(0), qSpeed);
+            p->qSpeedGround = qSpeed;
+        }
+    }
+
+    qSpeed = p->qSpeedGround;
+    p->qSpeedAirX = Q_MUL(qSpeed, COS_24_8((rot = p->rotation) * 4));
+    p->qSpeedAirY = Q_MUL(qSpeed, SIN_24_8(rot * 4));
+
+    SA2_LABEL(sub_8023128)(p);
+}
+#endif
+
+// ALIGNED UP TO HERE
 void Player_HandleSpriteYOffsetChange(Player *p, s32 spriteOffsetY)
 {
     u8 rot;
@@ -4945,6 +5160,7 @@ void CallPlayerTransition(Player *p)
     p->transition = 0;
 }
 
+// Confusion state related
 void Player_HandleInputs(Player *p)
 {
     u32 input;
@@ -5229,7 +5445,7 @@ void SA2_LABEL(sub_8024B10)(Player *p, PlayerSpriteInfo *inPsi)
 
     if (p->charState == CHARSTATE_WALK_A || p->charState == CHARSTATE_GRINDING
 #ifndef COLLECT_RINGS_ROM
-        || p->charState == CHARSTATE_ICE_SLIDE || p->charState == CHARSTATE_WALK_B
+        || p->charState == CHARSTATE_ICE_SLIDE || p->charState == CHARSTATE_BOUNCE
         || (p->charState == CHARSTATE_CREAM_CHAO_ATTACK && p->character == CHARACTER_CREAM)
 #endif
     ) {
@@ -6651,7 +6867,7 @@ void Player_InitPropellorSpring(Player *p)
         p->moveState &= ~MOVESTATE_FACING_LEFT;
     }
 
-    p->charState = CHARSTATE_WALK_B;
+    p->charState = CHARSTATE_BOUNCE;
     p->rotation = 0;
 
     PLAYERFN_SET_AND_CALL(Player_PropellorSpring, p);

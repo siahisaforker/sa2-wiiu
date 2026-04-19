@@ -498,7 +498,7 @@ const u16 sCharStateAnimInfo[][2] = {
     [CHARSTATE_WALLRUN_TO_WALL] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_73, CHARACTER_SHARED_ANIM), 1 },
     [CHARSTATE_WALLRUN_ON_WALL] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_73, CHARACTER_SHARED_ANIM), 2 },
     [CHARSTATE_ICE_SLIDE] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_75, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_WALK_B] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_WALK, CHARACTER_SHARED_ANIM), 2 },
+    [CHARSTATE_BOUNCE] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_WALK, CHARACTER_SHARED_ANIM), 2 },
     [CHARSTATE_LAUNCHER_IN_CART] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_71, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_LAUNCHER_IN_AIR] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_71, CHARACTER_SHARED_ANIM), 1 },
     [CHARSTATE_POLE] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_72, CHARACTER_SHARED_ANIM), 0 },
@@ -3914,11 +3914,14 @@ NONMATCH("asm/non_matching/game/sa1/stage/Player__sub_8044434.inc", bool32 sub_8
 END_NONMATCH
 #endif // (GAME == GAME_SA1)
 
-// ALIGNED UP TO HERE
 void Player_AirInputControls(Player *p)
 {
     s32 r5 = p->acceleration * 2;
+#if (GAME == GAME_SA1)
     s32 r6 = p->maxSpeed;
+#elif (GAME == GAME_SA2)
+    s32 r6 = p->topSpeed;
+#endif
 
     if ((p->charState != CHARSTATE_HIT_AIR)) {
         if (!(p->moveState & MOVESTATE_FLIP_WITH_MOVE_DIR)) {
@@ -3929,7 +3932,11 @@ void Player_AirInputControls(Player *p)
 #if (GAME == GAME_SA1) && !defined(NON_MATCHING)
                 qAirSpeedS = qAirSpeedU;
 #endif
-                if (p->charState != CHARSTATE_BOUNCE) {
+                if ((p->charState != CHARSTATE_BOUNCE)
+#if (GAME == GAME_SA2)
+                    && !(p->moveState & MOVESTATE_2000)
+#endif
+                ) {
                     p->moveState |= MOVESTATE_FACING_LEFT;
                 }
 
@@ -3946,7 +3953,11 @@ void Player_AirInputControls(Player *p)
                     }
                 }
             } else if (p->heldInput & DPAD_RIGHT) {
-                if ((p->charState != CHARSTATE_BOUNCE)) {
+                if ((p->charState != CHARSTATE_BOUNCE)
+#if (GAME == GAME_SA2)
+                    && !(p->moveState & MOVESTATE_2000)
+#endif
+                ) {
                     p->moveState &= ~MOVESTATE_FACING_LEFT;
                 }
 
@@ -3969,6 +3980,7 @@ void Player_AirInputControls(Player *p)
             p->qSpeedAirX = qAirSpeedU;
 #endif
         }
+
 #if (GAME == GAME_SA1)
         if ((u16)p->qSpeedAirY > (u16)(-Q(67) - 1)) {
             s16 qSpeedAirX = p->qSpeedAirX;
@@ -3989,8 +4001,8 @@ void Player_AirInputControls(Player *p)
                 p->qSpeedAirX = qSpeedAirX;
             }
         }
-    }
 #endif
+    }
 }
 
 #if (GAME == GAME_SA1)
@@ -4324,7 +4336,7 @@ void sub_8023748(Player *p)
 #ifndef COLLECT_RINGS_ROM
 void Player_HandleWater(Player *p)
 {
-#if (GAME == GAME_SA1)
+#if (GAME == GAME_SA1) && !defined(BUG_FIX)
 #define WATER_ACTIVE_CHECK 1
 #else
 #define WATER_ACTIVE_CHECK gWater.isActive == TRUE
@@ -4338,7 +4350,7 @@ void Player_HandleWater(Player *p)
 
             p->qSpeedAirX = p->qSpeedAirX >> 1;
             p->qSpeedAirY = p->qSpeedAirY >> 2;
-            if ((p->character != CHARACTER_KNUCKLES || p->SA2_LABEL(unk61) != 9) && (s8)p->framesUntilWaterSurfaceEffect < 1) {
+            if ((p->character != CHARACTER_KNUCKLES || p->SA2_LABEL(unk61) != 9) && p->framesUntilWaterSurfaceEffect < 1) {
                 p->framesUntilWaterSurfaceEffect = 10;
                 CreateWaterfallSurfaceHitEffect(I(p->qWorldX), gWater.currentWaterLevel);
                 m4aSongNumStart(SE_WATERFALL_SURFACE_HIT);
@@ -4360,7 +4372,7 @@ void Player_HandleWater(Player *p)
         if (--p->framesUntilDrownCountDecrement < 1) {
             switch (p->secondsUntilDrown--) {
                 case 11:
-                    if (p->playerID == PLAYER_1) {
+                    if (p->playerID == 0) {
                         gMusicManagerState.unk4 = 16;
                     }
                     break;
@@ -4418,7 +4430,6 @@ void Player_HandleWater(Player *p)
             p->deceleration = Q(192. / 256.);
         }
 #endif
-        // Inline of Player_InitializeDrowning?
         p->framesUntilDrownCountDecrement = 60;
         p->secondsUntilDrown = 30;
 
@@ -4454,6 +4465,7 @@ void Player_HandleWater(Player *p)
 }
 #endif
 
+#if (GAME == GAME_SA1)
 void Player_8044D74(Player *p)
 {
     Sprite *sprBelow = p->stoodObj;
@@ -4653,7 +4665,9 @@ void Player_8044F7C(Player *p)
 
     SA2_LABEL(sub_8023128)(p);
 }
+#endif
 
+// ALIGNED UP TO HERE
 void Player_HandleSpriteYOffsetChange(Player *p, s32 spriteOffsetY)
 {
     u8 rot;
@@ -4834,15 +4848,15 @@ static inline bool32 DeadPlayerLeftScreen(Player *p, struct Camera *cam, s32 pla
         }
     }
 #elif (GAME == GAME_SA2)
-        if (GRAVITY_IS_INVERTED) {
-            if (playerY <= Q(cam->y - 80)) {
-                return TRUE;
-            }
-        } else {
-            if (playerY >= Q(cam->y) + Q(DISPLAY_HEIGHT + 80) - 1) {
-                return TRUE;
-            }
+    if (GRAVITY_IS_INVERTED) {
+        if (playerY <= Q(cam->y - 80)) {
+            return TRUE;
         }
+    } else {
+        if (playerY >= Q(cam->y) + Q(DISPLAY_HEIGHT + 80) - 1) {
+            return TRUE;
+        }
+    }
 #endif
     return FALSE;
 }
@@ -4871,8 +4885,8 @@ void Task_PlayerDied(void)
     PLAYERFN_UPDATE_POSITION(p);
     PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
 #elif (GAME == GAME_SA2)
-        PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
-        PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
+    PLAYERFN_UPDATE_POSITION(p);
 #endif
     SA2_LABEL(sub_802486C)(p, psi1);
     SA2_LABEL(sub_8024B10)(p, psi1);
@@ -4962,23 +4976,23 @@ void Task_PlayerMain(void)
         m4aSongNumStop(27);
         m4aSongNumStop(SE_TAILS_PROPELLER_FLYING);
 #elif (GAME == GAME_SA2)
-            // TODO: macro IS_SONG_PLAYING(...)
-            if (gMPlayTable[0].info->songHeader == gSongTable[MUS_DROWNING].header) {
-                m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
-            }
-            if (gMPlayTable[0].info->songHeader == gSongTable[MUS_INVINCIBILITY].header) {
-                m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
-            }
+        // TODO: macro IS_SONG_PLAYING(...)
+        if (gMPlayTable[0].info->songHeader == gSongTable[MUS_DROWNING].header) {
+            m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
+        }
+        if (gMPlayTable[0].info->songHeader == gSongTable[MUS_INVINCIBILITY].header) {
+            m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
+        }
 
-            m4aSongNumStop(MUS_DROWNING);
+        m4aSongNumStop(MUS_DROWNING);
 
-            if (p->character == CHARACTER_TAILS) {
-                m4aSongNumStop(SE_TAILS_PROPELLER_FLYING);
-            }
+        if (p->character == CHARACTER_TAILS) {
+            m4aSongNumStop(SE_TAILS_PROPELLER_FLYING);
+        }
 
-            if (p->character == CHARACTER_CREAM) {
-                m4aSongNumStop(SE_CREAM_FLYING);
-            }
+        if (p->character == CHARACTER_CREAM) {
+            m4aSongNumStop(SE_CREAM_FLYING);
+        }
 #endif
 
         if (p->secondsUntilDrown < 0) {
@@ -5048,6 +5062,8 @@ void Task_PlayerMain(void)
 #endif
 }
 
+#if (GAME == GAME_SA1)
+// Partner handlers
 // TODO(Jace): Could this be exclusively for the CPU Tails?
 //             I didn't find a way to trigger this procedure yet.
 // (93.14%) https://decomp.me/scratch/CpseV
@@ -5359,6 +5375,7 @@ void Task_8045B38(void)
 
     partner->SA2_LABEL(unk25) = 120;
 }
+#endif
 
 // Confusion state related
 void Player_HandleInputs(Player *p)
@@ -5659,11 +5676,7 @@ NONMATCH("asm/non_matching/game/sa1/stage/Player__sa2__sub_802486C.inc", void SA
 }
 END_NONMATCH
 
-// NOTE: Main thing preventing this to match are the jumps due to the
-//       if-else blocks setting CHARSTATE_IDLE and CHARSTATE_WALK_A.
-//       It "matches semantically".
-// (99.99%) https://decomp.me/scratch/e9oqw
-NONMATCH("asm/non_matching/game/sa1/stage/Player__sa2__sub_8024B10.inc", void SA2_LABEL(sub_8024B10)(Player *p, PlayerSpriteInfo *inPsi))
+void SA2_LABEL(sub_8024B10)(Player *p, PlayerSpriteInfo *inPsi)
 {
     struct MultiSioData_0_4 *send;
     MultiplayerPlayer *mpp;
@@ -5683,10 +5696,10 @@ NONMATCH("asm/non_matching/game/sa1/stage/Player__sa2__sub_8024B10.inc", void SA
         r2;
     });
 #else
-        bool32 cond = ({
-            bool32 r2 = s->prevVariant == 0xFF || s->prevAnim == 0xFFFF;
-            r2;
-        });
+    bool32 cond = ({
+        bool32 r2 = s->prevVariant == 0xFF || s->prevAnim == 0xFFFF;
+        r2;
+    });
 #endif
 
 top:
@@ -5698,8 +5711,8 @@ top:
 #if (GAME == GAME_SA1)
     if (p->charState == CHARSTATE_WALK_A || p->charState == 23 || p->charState == 32 || p->charState == 40)
 #elif (GAME == GAME_SA2)
-        if (p->charState == CHARSTATE_WALK_A || p->charState == CHARSTATE_GRINDING || p->charState == CHARSTATE_ICE_SLIDE
-            || p->charState == CHARSTATE_WALK_B || (p->charState == CHARSTATE_CREAM_CHAO_ATTACK && p->character == CHARACTER_CREAM))
+    if (p->charState == CHARSTATE_WALK_A || p->charState == CHARSTATE_GRINDING || p->charState == CHARSTATE_ICE_SLIDE
+        || p->charState == CHARSTATE_BOUNCE || (p->charState == CHARSTATE_CREAM_CHAO_ATTACK && p->character == CHARACTER_CREAM))
 #endif
     {
         if (p->charState != 32) {
@@ -5809,10 +5822,10 @@ top:
                     p->moveState &= ~(MOVESTATE_2000000 | MOVESTATE_4000000);
                 }
                 // _080465F0
-                if (p->qSpeedGround == 0) {
-                    p->charState = CHARSTATE_IDLE;
-                } else {
+                if (p->qSpeedGround != 0) {
                     p->charState = CHARSTATE_WALK_A;
+                } else {
+                    p->charState = CHARSTATE_IDLE;
                 }
             } else if (p->charState == CHARSTATE_46) {
                 // _08046608 + 0xA
@@ -5998,7 +6011,7 @@ top:
 #if (GAME == GAME_SA1)
     send->unk0 = 0x1000;
 #elif (GAME == GAME_SA2)
-        send->unk0 = 0x5000;
+    send->unk0 = 0x5000;
 #endif
     send->x = I(p->qWorldX) + p->SA2_LABEL(unk7C);
     send->y = I(p->qWorldY);
@@ -6096,7 +6109,6 @@ top:
     send->unk8 &= ~0x600;
     send->unk8 |= (mpp->unk64 << 9);
 }
-END_NONMATCH
 
 void SA2_LABEL(sub_8024F74)(Player *p, PlayerSpriteInfo *inPsi)
 {
@@ -6224,20 +6236,20 @@ void Player_TransitionCancelFlyingAndBoost(Player *p)
 
     p->moveState &= ~MOVESTATE_8000;
 #elif (GAME == GAME_SA2)
-        if (p->moveState & MOVESTATE_20000) {
-            m4aSongNumStop(SE_281);
-        }
+    if (p->moveState & MOVESTATE_20000) {
+        m4aSongNumStop(SE_281);
+    }
 
-        p->moveState &= ~(MOVESTATE_SOME_ATTACK | MOVESTATE_10000000 | MOVESTATE_1000000 | MOVESTATE_80000 | MOVESTATE_40000
-                          | MOVESTATE_20000 | MOVESTATE_8000 | MOVESTATE_4000 | MOVESTATE_2000 | MOVESTATE_SPINDASH | MOVESTATE_200
-                          | MOVESTATE_100 | MOVESTATE_20 | MOVESTATE_FLIP_WITH_MOVE_DIR);
+    p->moveState &= ~(MOVESTATE_SOME_ATTACK | MOVESTATE_10000000 | MOVESTATE_1000000 | MOVESTATE_80000 | MOVESTATE_40000 | MOVESTATE_20000
+                      | MOVESTATE_8000 | MOVESTATE_4000 | MOVESTATE_2000 | MOVESTATE_SPINDASH | MOVESTATE_200 | MOVESTATE_100 | MOVESTATE_20
+                      | MOVESTATE_FLIP_WITH_MOVE_DIR);
 
-        p->SA2_LABEL(unk61) = 0;
-        p->SA2_LABEL(unk62) = 0;
-        p->SA2_LABEL(unk63) = 0;
+    p->SA2_LABEL(unk61) = 0;
+    p->SA2_LABEL(unk62) = 0;
+    p->SA2_LABEL(unk63) = 0;
 
-        p->SA2_LABEL(unk71) = 0;
-        p->SA2_LABEL(unk70) = FALSE;
+    p->SA2_LABEL(unk71) = 0;
+    p->SA2_LABEL(unk70) = FALSE;
 #endif
 
     if (p->character == CHARACTER_TAILS) {
@@ -6249,13 +6261,13 @@ void Player_TransitionCancelFlyingAndBoost(Player *p)
         p->moveState &= ~(MOVESTATE_4000000 | MOVESTATE_2000000);
     }
 #elif (GAME == GAME_SA2)
-        if (p->character == CHARACTER_CREAM) {
-            m4aSongNumStop(SE_CREAM_FLYING);
-        }
+    if (p->character == CHARACTER_CREAM) {
+        m4aSongNumStop(SE_CREAM_FLYING);
+    }
 
-        if (p->character == CHARACTER_SONIC) {
-            p->moveState &= ~MOVESTATE_BOOST_EFFECT_ON;
-        }
+    if (p->character == CHARACTER_SONIC) {
+        p->moveState &= ~MOVESTATE_BOOST_EFFECT_ON;
+    }
 #endif
 }
 
@@ -6479,14 +6491,14 @@ void SA2_LABEL(sub_8029CA0)(Player *p)
     s32 rot;
     if (((p->rotation + Q(0.375)) & 0xFF) < Q(0.75))
 #else
-        s32 rot = p->rotation;
-        if (((rot + Q(0.375)) & 0xFF) < Q(0.75))
+    s32 rot = p->rotation;
+    if (((rot + Q(0.375)) & 0xFF) < Q(0.75))
 #endif
     {
 #if (GAME == GAME_SA1)
         rot = GET_ROTATED_ACCEL(p->rotation);
 #else
-            rot = GET_ROTATED_ACCEL(rot);
+        rot = GET_ROTATED_ACCEL(rot);
 #endif
 
         if (p->qSpeedGround != 0) {
@@ -6506,15 +6518,15 @@ void SA2_LABEL(sub_8029CE0)(Player *p)
     }
 }
 #else
-    void SA2_LABEL(sub_8029CE0)(Player * p)
-    {
-        s32 rot = p->rotation;
-        if (((rot + Q(0.375)) & 0xFF) < Q(0.75)) {
-            s32 other = GET_ROTATED_ACCEL_2(rot);
+void SA2_LABEL(sub_8029CE0)(Player *p)
+{
+    s32 rot = p->rotation;
+    if (((rot + Q(0.375)) & 0xFF) < Q(0.75)) {
+        s32 other = GET_ROTATED_ACCEL_2(rot);
 
-            p->qSpeedGround += other;
-        }
+        p->qSpeedGround += other;
     }
+}
 #endif
 
 void SA2_LABEL(sub_8029D14)(Player *p)
@@ -6522,7 +6534,7 @@ void SA2_LABEL(sub_8029D14)(Player *p)
 #ifndef NON_MATCHING
     register s32 grndSpeed asm("r2") = p->qSpeedGround;
 #else
-        s32 grndSpeed = p->qSpeedGround;
+    s32 grndSpeed = p->qSpeedGround;
 #endif
 
     if ((((p->rotation + Q(0.375)) & 0xFF) < Q(0.75)) && grndSpeed != 0) {
@@ -6605,13 +6617,13 @@ bool32 SA2_LABEL(sub_8029DE8)(Player *p)
                 return TRUE;
         }
 #elif (GAME == GAME_SA2)
-            if (GRAVITY_IS_INVERTED) {
-                if (playerY <= Q(cam->minY))
-                    return TRUE;
-            } else {
-                if (playerY >= Q(cam->maxY) - 1)
-                    return TRUE;
-            }
+        if (GRAVITY_IS_INVERTED) {
+            if (playerY <= Q(cam->minY))
+                return TRUE;
+        } else {
+            if (playerY >= Q(cam->maxY) - 1)
+                return TRUE;
+        }
 #endif
     }
 
@@ -6633,13 +6645,13 @@ bool32 DeadPlayerLeftScreen_UnusedCopy(Player *p)
                 return TRUE;
         }
 #elif (GAME == GAME_SA2)
-            if (GRAVITY_IS_INVERTED) {
-                if (playerY <= Q(cam->y - 80))
-                    return TRUE;
-            } else {
-                if (playerY >= Q(cam->y) + Q(DISPLAY_HEIGHT + 80) - 1)
-                    return TRUE;
-            }
+        if (GRAVITY_IS_INVERTED) {
+            if (playerY <= Q(cam->y - 80))
+                return TRUE;
+        } else {
+            if (playerY >= Q(cam->y) + Q(DISPLAY_HEIGHT + 80) - 1)
+                return TRUE;
+        }
 #endif
     }
 
