@@ -1,41 +1,128 @@
 #include "global.h"
 #include "core.h"
+#include "flags.h"
+#include "bg_triangles.h"
+#include "multi_sio.h"
+#include "sio32_multi_load.h" // for SIO32ML_BLOCK_SIZE
 
+#include "lib/m4a/m4a.h"
+
+#include "game/globals.h"
 #include "game/shared/stage/player.h"
 #include "game/shared/stage/stage.h"
-#include "game/sa2/stage/tilemap_table.h"
-
-#include "game/sa2/collect_rings/singlepak_connection.h"
-#include "game/sa2/multiplayer/multipak_connection.h"
-#include "game/shared/collect_rings/results.h"
-#include "task.h"
-#include "sprite.h"
-#include "data/sa2/sprite_data.h"
-#include "bg_triangles.h"
-#include "game/sa2/save.h"
-#include "game/sa2/title_screen.h"
-#include "game/sa2/stage/screen_fade.h"
-#include "lib/m4a/m4a.h"
-#include "multi_boot.h"
-#include "sio32_multi_load.h"
+#include "game/shared/multiplayer/communication_outcome.h"
 
 #if COLLECT_RINGS_ROM
 #include "game/shared/stage/mp_player.h"
 #endif
 
+#if (GAME == GAME_SA1)
+#include "game/sa1/save.h"
+#include "game/sa1/stage/tilemap_table.h"
+#include "game/sa1/menus/mp_mode_select_2.h"
+
+#include "data/sa1/sprite_tables.h"
+#include "data/sa1/collect_rings.h"
+
+#include "constants/sa1/animations.h"
+#include "constants/sa1/songs.h"
+#include "constants/sa1/text.h"
+#include "constants/sa1/tilemaps.h"
+#include "constants/sa1/zones.h"
+#elif (GAME == GAME_SA2)
+#include "game/sa2/save.h"
+#include "game/sa2/title_screen.h"
+#include "game/sa2/collect_rings/singlepak_connection.h"
+#include "game/sa2/multiplayer/multipak_connection.h"
+
+#include "game/sa2/stage/screen_fade.h"
+#include "game/sa2/stage/tilemap_table.h"
+
 #include "data/sa2/collect_rings.h"
+#include "data/sa2/sprite_data.h"
 
 #include "constants/sa2/animations.h"
 #include "constants/sa2/songs.h"
 #include "constants/sa2/text.h"
 #include "constants/sa2/tilemaps.h"
+#endif
 
-struct MultiplayerSinglePakResultsScreen_UNK80 {
+// This is probably a non match but works on both games
+#define BASE_ADDR(i)                                                                                                                       \
+    ({                                                                                                                                     \
+        s32 r8 = (i);                                                                                                                      \
+        r8 << 14;                                                                                                                          \
+    })
+
+#define INIT_1()                                                                                                                           \
+    gDispCnt = DISPCNT_OBJ_1D_MAP;                                                                                                         \
+    gBgCntRegs[3] = 0x5E0B;                                                                                                                \
+    gBgCntRegs[2] = 0x1C0C;                                                                                                                \
+    gBgSprites_Unknown1[2] = 0x7F;                                                                                                         \
+    gBgSprites_Unknown2[2][0] = 0;                                                                                                         \
+    gBgSprites_Unknown2[2][1] = 0;                                                                                                         \
+    gBgSprites_Unknown2[2][2] = 0xFF;                                                                                                      \
+    gBgSprites_Unknown2[2][3] = 0x20;                                                                                                      \
+    gBgSprites_Unknown1[3] = -1;                                                                                                           \
+    gBgSprites_Unknown2[3][0] = 0;                                                                                                         \
+    gBgSprites_Unknown2[3][1] = 0;                                                                                                         \
+    gBgSprites_Unknown2[3][2] = -1;                                                                                                        \
+    gBgSprites_Unknown2[3][3] = 0x40;                                                                                                      \
+    DmaFill32(3, 0, VRAM + 0x9FE0, 0x40);                                                                                                  \
+    DmaFill32(3, 0, VRAM + 0xFE0 + BASE_ADDR(3), 0x40);
+
+#define INIT_SCREEN(m)                                                                                                                     \
+    ({                                                                                                                                     \
+        resultsScreen = TASK_DATA(                                                                                                         \
+            TaskCreate(Task_MultiplayerSinglePakResultsScreenInit, sizeof(struct MultiplayerSinglePakResultsScreen), 0x2000, 0, NULL));    \
+        resultsScreen->mode = (m);                                                                                                         \
+        resultsScreen->unk430 = 0;                                                                                                         \
+        resultsScreen->actor = 0;                                                                                                          \
+    })
+
+#define INIT_BG(mBg, id)                                                                                                                   \
+    ({                                                                                                                                     \
+        Background *bg = &(mBg);                                                                                                           \
+        bg->graphics.dest = (void *)BG_SCREEN_ADDR(16);                                                                                    \
+        bg->graphics.anim = 0;                                                                                                             \
+        bg->layoutVram = (void *)BG_SCREEN_ADDR(30);                                                                                       \
+        bg->unk18 = 0;                                                                                                                     \
+        bg->unk1A = 0;                                                                                                                     \
+        bg->tilemapId = (id);                                                                                                              \
+        bg->unk1E = 0;                                                                                                                     \
+        bg->unk20 = 0;                                                                                                                     \
+        bg->unk22 = 0;                                                                                                                     \
+        bg->unk24 = 0;                                                                                                                     \
+        bg->targetTilesX = 0x1E;                                                                                                           \
+        bg->targetTilesY = 0x19;                                                                                                           \
+        bg->paletteOffset = 0;                                                                                                             \
+        bg->flags = BACKGROUND_FLAGS_BG_ID(3);                                                                                             \
+        DrawBackground(bg);                                                                                                                \
+    })
+
+#define RS_SPRITE_INIT(s, _vramAddr, _animId, _variant, _x, _y, _oamFlags, _unk25, _unk10)                                                 \
+    s->x = (_x);                                                                                                                           \
+    s->y = (_y);                                                                                                                           \
+    s->graphics.dest = (_vramAddr);                                                                                                        \
+    s->oamFlags = (_oamFlags);                                                                                                             \
+    s->graphics.size = 0;                                                                                                                  \
+    s->graphics.anim = (_animId);                                                                                                          \
+    s->variant = (_variant);                                                                                                               \
+    s->animCursor = 0;                                                                                                                     \
+    s->qAnimDelay = 0;                                                                                                                     \
+    s->prevVariant = -1;                                                                                                                   \
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);                                                                                                 \
+    s->palId = (_unk25);                                                                                                                   \
+    s->frameFlags = (_unk10);                                                                                                              \
+    UpdateSpriteAnimation(s);
+
+// TODO: Is this a "Sprite2" (Sprite with 2 hitboxes)?
+typedef struct MultiplayerSinglePakResultsScreen_UNK80 {
     Sprite unk0;
     u8 filler30[8];
-};
+} MultiplayerSinglePakResultsScreen_UNK80;
 
-struct MultiplayerSinglePakResultsScreen {
+typedef struct MultiplayerSinglePakResultsScreen {
     Background unk0;
     Background unk40;
     struct MultiplayerSinglePakResultsScreen_UNK80 unk80[4];
@@ -45,35 +132,62 @@ struct MultiplayerSinglePakResultsScreen {
     Sprite unk400;
     u16 unk430;
     u16 unk432;
-    u32 unk434;
+    u32 mode;
     u8 actor;
     u8 filler439[3];
     u32 unk43C;
-}; /* size 0x440 */
+} MultiplayerSinglePakResultsScreen; /* size 0x440 */
 
-struct MultiplayerSinglePakResultsScreen *InitAndGetResultsScreenObject(s16);
+struct MultiplayerSinglePakResultsScreen *InitScreen(s16);
 
-void sub_8081FB0(void);
-void sub_80823FC(void);
-void sub_8082AA8(void);
+void Task_MultiplayerSinglePakResultsScreenInit(void);
+void SA2_LABEL(sub_80823FC)(void);
 void SA2_LABEL(Task_8082630)(void);
 void SA2_LABEL(sub_808267C)(void);
-void sub_8082788(void);
-void sub_8082038(struct MultiplayerSinglePakResultsScreen *);
+void SA2_LABEL(sub_8082788)(void);
+void SA2_LABEL(sub_8082AA8)(void);
+
+#if (GAME == GAME_SA2)
+void Init1(void);
+void InitBg(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082B80(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082C58(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *);
-
 void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y, u16 oamFlags, u8 unk25, u32 unk10);
+#endif
+
+#if (GAME == GAME_SA1)
+void LinkCommunicationError(void)
+{
+    m4aMPlayAllStop();
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_COPY;
+    gDispCnt = 0x40;
+    gMultiSioEnabled = FALSE;
+    MultiSioStop();
+    MultiSioInit(0);
+
+    gTilemapsRef = (Tilemap **)gTilemaps;
+    gRefSpriteTables = &gSpriteTables;
+    gMultiplayerMissingHeartbeats[0] = 0;
+    gMultiplayerMissingHeartbeats[1] = 0;
+    gMultiplayerMissingHeartbeats[2] = 0;
+    gMultiplayerMissingHeartbeats[3] = 0;
+    CreateMultipackOutcomeScreen(OUTCOME_CONNECTION_ERROR);
+}
+#endif
 
 // TODO: Maybe rename because this is also called before the 1st round?
 void CreateMultiplayerSinglePakResultsScreen(u32 a)
 {
+    Sprite *s;
+    u32 i;
     struct MultiplayerSinglePakResultsScreen *resultsScreen;
+#if (GAME == GAME_SA2)
 #ifndef COLLECT_RINGS_ROM
     const u8 *tilemaps = gCollectRingsTilemaps;
     const u8 *bgStageTileset = gCollectRingsBgStageTileset;
+#endif
 #endif
 
     gMultiplayerMissingHeartbeats[3] = 0;
@@ -91,23 +205,83 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     gFlags &= ~0x4000;
     m4aSoundVSyncOn();
     gGameMode = GAME_MODE_MULTI_PLAYER_COLLECT_RINGS;
-
+#if (GAME == GAME_SA1)
+    CpuFastCopy(gCollectRingsTilemaps, (void *)BG_VRAM, SIO32ML_BLOCK_SIZE);
+    CpuFastCopy(gCollectRingsBgStageTileset, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
+#elif (GAME == GAME_SA2)
 #ifndef COLLECT_RINGS_ROM
     CpuFastCopy(bgStageTileset, (void *)BG_VRAM, SIO32ML_BLOCK_SIZE);
     CpuFastCopy(tilemaps, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
 #endif
+#endif
 
     gTilemapsRef = *((Tilemap ***)(EWRAM_START + 0x33000));
+#if (GAME == GAME_SA2)
 #if COLLECT_RINGS_ROM
     gRefSpriteTables = (const struct SpriteTables *)(EWRAM_START + 0x20000);
     gMultiplayerLanguage = 0;
 #else
     gMultiplayerLanguage = LOADED_SAVE->language;
 #endif
+#endif
 
-    sub_8081FB0();
-    resultsScreen = InitAndGetResultsScreenObject(a);
-    sub_8082038(resultsScreen);
+// The code is the same they just split it out into functions
+#if (GAME == GAME_SA1)
+    INIT_1();
+    INIT_SCREEN(a);
+    resultsScreen->unk43C = LOADED_SAVE->unk4 + gFrameCount;
+    INIT_BG(resultsScreen->unk0, 4);
+
+    for (i = 0; i < (s32)ARRAY_COUNT(resultsScreen->unk80); i++) {
+        s = &resultsScreen->unk80[i].unk0;
+
+        RS_SPRITE_INIT(s, OBJ_VRAM0 + (i << 0xB), gPlayerCharacterIdleAnims[i], 0, 120, 0x14 + (i * 0x28), SPRITE_OAM_ORDER(16), 0, 0x1000);
+    }
+
+    for (i = 0; i < (s32)ARRAY_COUNT(resultsScreen->unk160); i++) {
+        void *vram = OBJ_VRAM0 + 0x2000 + (i * 0x80);
+        u32 oamFlags = SPRITE_OAM_ORDER(4); // required to be here for match
+
+        s = &resultsScreen->unk160[i];
+        RS_SPRITE_INIT(s, vram, 0x380, (i + 3), 0, 0, oamFlags, 0, 0x1000);
+    }
+
+    if (resultsScreen->mode != 0) {
+        for (i = 0; i < (s32)ARRAY_COUNT(resultsScreen->unk370); i++) {
+            s = &resultsScreen->unk370[i];
+            // Doesn't match macro and I CBA
+            s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2500 + (i * UNK_GFX_SIZE));
+            s->x = 0;
+            s->y = 0;
+            s->oamFlags = SPRITE_OAM_ORDER(4);
+            s->graphics.size = 0;
+            s->graphics.anim = 0x380;
+            s->variant = i;
+            s->animCursor = 0;
+            s->qAnimDelay = 0;
+            s->prevVariant = -1;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+            s->palId = 0;
+            s->frameFlags = 0x1000;
+            UpdateSpriteAnimation(s);
+        }
+    } else {
+        s = &resultsScreen->unk340;
+        RS_SPRITE_INIT(s, (void *)OBJ_VRAM0 + 0x2500, 0x380, 13, 0, 0, SPRITE_OAM_ORDER(4), 0, 0x1000);
+    }
+
+    if (resultsScreen->mode != 0) {
+        m4aSongNumStart(MUS_VS_RESULT);
+    } else {
+        m4aSongNumStart(MUS_VS_SCORE_OVERVIEW);
+    }
+
+    gBldRegs.bldCnt = 0xFF;
+    gBldRegs.bldY = 0x10;
+#elif (GAME == GAME_SA2)
+    Init1();
+    resultsScreen = InitScreen(a);
+    InitBg(resultsScreen);
     sub_8082B80(resultsScreen);
     sub_8082BF8(resultsScreen);
 
@@ -122,47 +296,13 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     gBldRegs.bldCnt = 0;
     gBldRegs.bldAlpha = 0;
     gBldRegs.bldY = 0;
+#endif
 }
 
-void sub_8081FB0(void)
-{
-    gDispCnt = 0x40;
-    gBgCntRegs[3] = 0x5e0b;
-    gBgCntRegs[2] = 0x1c0c;
-    gBgSprites_Unknown1[2] = 0x7f;
-    gBgSprites_Unknown2[2][0] = 0;
-    gBgSprites_Unknown2[2][1] = 0;
-    gBgSprites_Unknown2[2][2] = 0xff;
-    gBgSprites_Unknown2[2][3] = 32;
-    gBgSprites_Unknown1[3] = 0xff;
-    gBgSprites_Unknown2[3][0] = 0;
-    gBgSprites_Unknown2[3][1] = 0;
-    gBgSprites_Unknown2[3][2] = 0xff;
-    gBgSprites_Unknown2[3][3] = 64;
+#if (GAME == GAME_SA2)
+void Init1(void) { INIT_1(); }
 
-    DmaFill32(3, 0, (void *)VRAM + 0x9FE0, 64);
-    DmaFill32(3, 0, (void *)VRAM + 0xCFE0, 64);
-}
-
-void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
-{
-    Background *background = &screen->unk0;
-    background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
-    background->graphics.anim = 0;
-    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
-    background->unk18 = 0;
-    background->unk1A = 0;
-    background->tilemapId = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_2));
-    background->unk1E = 0;
-    background->unk20 = 0;
-    background->unk22 = 0;
-    background->unk24 = 0;
-    background->targetTilesX = 0x1e;
-    background->targetTilesY = 0x19;
-    background->paletteOffset = 0;
-    background->flags = BACKGROUND_FLAGS_BG_ID(3);
-    DrawBackground(background);
-}
+void InitBg(struct MultiplayerSinglePakResultsScreen *screen) { INIT_BG(screen->unk0, TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_2))); }
 
 #if COLLECT_RINGS_ROM
 void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
@@ -178,6 +318,7 @@ void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
         sub_8082CEC(&resultsScreen->unk80[i].unk0, OBJ_VRAM0 + (i * 0x800), val, 0, 0x78, i * 40 + 20, SPRITE_OAM_ORDER(16), i, 0x1000);
     }
 }
+#endif
 #endif
 
 void Task_MultiplayerSinglePakResultsScreenInit(void)
@@ -212,7 +353,7 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
         gFlags &= ~0x8000;
 #endif
 
-        if (resultsScreen->unk434) {
+        if (resultsScreen->mode) {
             for (i = 0; i < 3; i++) {
                 s32 temp;
                 s = &resultsScreen->unk370[i];
@@ -272,7 +413,7 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
             s->x = DISPLAY_CENTER_X;
             s->y = DISPLAY_CENTER_Y;
 
-            if (resultsScreen->unk434) {
+            if (resultsScreen->mode) {
                 s->graphics.dest = resultsScreen->unk370[2].graphics.dest + 0x180;
             } else {
                 s->graphics.dest = resultsScreen->unk340.graphics.dest + 0x180;
@@ -309,8 +450,8 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
         }
 #endif
         resultsScreen->unk430 = 0;
-        gCurTask->main = sub_80823FC;
-        sub_80823FC();
+        gCurTask->main = SA2_LABEL(sub_80823FC);
+        SA2_LABEL(sub_80823FC)();
     } else {
 #ifndef NON_MATCHING
         // This is wrong, just here to make asm correct here
@@ -340,7 +481,7 @@ void Task_MultiplayerSinglePakResultsScreenInit(void)
     }
 }
 
-void sub_80823FC(void)
+void SA2_LABEL(sub_80823FC)(void)
 {
     Background *background;
     u32 i;
@@ -357,7 +498,7 @@ void sub_80823FC(void)
 #else
         gSelectedCharacter = SIO_MULTI_CNT->id;
 #endif
-        if (!resultsScreen->unk434) {
+        if (!resultsScreen->mode) {
             background = &resultsScreen->unk40;
             gBgScrollRegs[2][0] = 0;
             gBgScrollRegs[2][1] = 0;
@@ -397,16 +538,16 @@ void sub_80823FC(void)
 
         gDispCnt |= 0x400;
         resultsScreen->unk430 = 0;
-        if (resultsScreen->unk434) {
+        if (resultsScreen->mode) {
             gBldRegs.bldCnt = 0xFF;
-            gCurTask->main = Task_8082630;
-            Task_8082630();
+            gCurTask->main = SA2_LABEL(Task_8082630);
+            SA2_LABEL(Task_8082630)();
         } else {
-            gCurTask->main = sub_8082AA8;
-            sub_8082AA8();
+            gCurTask->main = SA2_LABEL(sub_8082AA8);
+            SA2_LABEL(sub_8082AA8)();
         }
     } else {
-        sub_8082788();
+        SA2_LABEL(sub_8082788)();
 
 #ifndef COLLECT_RINGS_ROM
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
@@ -437,7 +578,7 @@ void sub_80823FC(void)
     }
 }
 
-void SA2_LABEL(Task_8082630)(void)
+void SA2_LABEL(SA2_LABEL(Task_8082630))(void)
 {
     struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     resultsScreen->unk430 += 0x20;
@@ -469,7 +610,7 @@ void SA2_LABEL(sub_808267C)(void)
         }
 
         gFlags &= ~4;
-        if (resultsScreen->unk434) {
+        if (resultsScreen->mode) {
             TaskDestroy(gCurTask);
             CreateMultiplayerSinglePakResultsScreen(0);
         } else {
@@ -505,7 +646,7 @@ void SA2_LABEL(sub_808267C)(void)
     }
 }
 
-void sub_8082788(void)
+void SA2_LABEL(sub_8082788)(void)
 {
     u32 i;
 
@@ -520,7 +661,7 @@ void sub_8082788(void)
             sub_80078D4(3, i * 40, (i + 1) * 40, 0, DISPLAY_HEIGHT - i * 40);
         } else {
             sub_80078D4(3, gMultiplayerRanks[i] * 40, (gMultiplayerRanks[i] + 1) * 40, 0, i * 40 - gMultiplayerRanks[i] * 40);
-            if (resultsScreen->unk434) {
+            if (resultsScreen->mode) {
                 u16 temp;
 
                 s = &resultsScreen->unk80[i].unk0;
@@ -591,11 +732,11 @@ void sub_8082788(void)
     }
 }
 
-void sub_8082AA8(void)
+void SA2_LABEL(sub_8082AA8)(void)
 {
     struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(gCurTask);
 
-    sub_8082788();
+    SA2_LABEL(sub_8082788)();
     if (resultsScreen->unk430++ > 0x1E) {
         resultsScreen->unk430 = 0;
         m4aMPlayFadeOut(&gMPlayInfo_BGM, 8);
@@ -603,19 +744,14 @@ void sub_8082AA8(void)
         m4aMPlayFadeOut(&gMPlayInfo_SE2, 8);
         m4aMPlayFadeOut(&gMPlayInfo_SE3, 8);
         gBldRegs.bldCnt = 0xFF;
-        gCurTask->main = Task_8082630;
+        gCurTask->main = SA2_LABEL(Task_8082630);
     }
 }
 
-struct MultiplayerSinglePakResultsScreen *InitAndGetResultsScreenObject(s16 mode)
+struct MultiplayerSinglePakResultsScreen *InitScreen(s16 mode)
 {
-    struct Task *t
-        = TaskCreate(Task_MultiplayerSinglePakResultsScreenInit, sizeof(struct MultiplayerSinglePakResultsScreen), 0x2000, 0, NULL);
-    struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(t);
-
-    resultsScreen->unk434 = mode;
-    resultsScreen->unk430 = 0;
-    resultsScreen->actor = 0;
+    struct MultiplayerSinglePakResultsScreen *resultsScreen;
+    INIT_SCREEN(mode);
     resultsScreen->unk43C = gFrameCount;
 
     return resultsScreen;
@@ -668,18 +804,5 @@ void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 
 void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y, u16 oamFlags, u8 unk25, u32 unk10)
 {
-    s->x = x;
-    s->y = y;
-    s->graphics.dest = vramAddr;
-    s->oamFlags = oamFlags;
-    s->graphics.size = 0;
-    s->graphics.anim = animId;
-    s->variant = variant;
-    s->animCursor = 0;
-    s->qAnimDelay = 0;
-    s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
-    s->palId = unk25;
-    s->frameFlags = unk10;
-    UpdateSpriteAnimation(s);
+    RS_SPRITE_INIT(s, vramAddr, animId, variant, x, y, oamFlags, unk25, unk10);
 }
