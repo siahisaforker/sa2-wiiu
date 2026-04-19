@@ -5583,21 +5583,20 @@ void CallPlayerTransition(Player *p)
 }
 #endif
 
-// ALIGNED UP TO HERE
 // Confusion state related
 void Player_HandleInputs(Player *p)
 {
-    u8 r0;
-    u8 r1;
-    u8 r2;
-    u16 r6;
+    u8 r0, r1, r2;
+    u16 input;
 
     if (IS_MULTI_PLAYER && (SIO_MULTI_CNT->id != gCamera.spectatorTarget)) {
         p->heldInput = 0;
-        r6 = 0;
+        input = 0;
+#if (GAME == GAME_SA1)
         sub_804D13C(0);
+#endif
     } else {
-        r6 = p->heldInput;
+        input = p->heldInput;
 
         if (!(p->moveState & MOVESTATE_IGNORE_INPUT)) {
             p->heldInput = gInput;
@@ -5614,22 +5613,26 @@ void Player_HandleInputs(Player *p)
                 r0 = ((r2 >> 4) | r2);
                 r2 = r0 << 4;
 
-                p->heldInput = (p->heldInput & 0xFF0F) | r2;
+                p->heldInput = (p->heldInput & ~DPAD_ANY) | r2;
                 if (--p->timerConfusion == 0) {
                     p->itemEffect &= ~PLAYER_ITEM_EFFECT__CONFUSION;
                 }
             }
-
+#if (GAME == GAME_SA1)
             sub_804D13C(p->heldInput);
-        } else {
+#endif
+        }
+#if (GAME == GAME_SA1)
+        else {
             sub_804D13C(0);
         }
+#endif
     }
 
-    r6 ^= p->heldInput;
-    r6 &= p->heldInput;
-    p->frameInput = r6;
-
+    input ^= p->heldInput;
+    input &= p->heldInput;
+    p->frameInput = input;
+#if (GAME == GAME_SA1)
     if (p->heldInput & DPAD_SIDEWAYS) {
         p->heldInput &= ~DPAD_VERTICAL;
     }
@@ -5637,8 +5640,10 @@ void Player_HandleInputs(Player *p)
     if (p->frameInput & DPAD_SIDEWAYS) {
         p->frameInput &= ~DPAD_VERTICAL;
     }
+#endif
 }
 
+#if (GAME == GAME_SA1)
 // TODO: Remove gotos
 void sub_8045DF0(Player *p)
 {
@@ -5750,10 +5755,107 @@ void sub_8045DF0(Player *p)
     p->heldInput = r4;
     p->frameInput = r5;
 }
+#endif
 
-// This function is in SA2, but looks very different in many aspects
-// (99.16%) https://decomp.me/scratch/7kBSw
-NONMATCH("asm/non_matching/game/sa1/stage/Player__sa2__sub_802486C.inc", void SA2_LABEL(sub_802486C)(Player *p, PlayerSpriteInfo *psi))
+#if (GAME == GAME_SA2)
+void sub_80246DC(Player *p)
+{
+    Sprite *s = &p->spriteInfoBody->s;
+    u16 charState = p->charState;
+#ifndef COLLECT_RINGS_ROM
+    u32 anim = p->anim;
+#else
+    u16 anim = p->anim;
+#endif
+    u32 variant = p->variant;
+    u32 sl = variant;
+
+#ifndef COLLECT_RINGS_ROM
+    AnimId baseAnim = gPlayerCharacterIdleAnims[p->character];
+#else
+    AnimId baseAnim = gPlayerCharacterIdleAnims[0];
+#endif
+    anim = (u16)(anim - baseAnim);
+
+    if ((charState == CHARSTATE_JUMP_1) || (charState == CHARSTATE_JUMP_2)) {
+        if (p->variant == 0 && (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) && (((u16)anim - 10) == 0 || ((u16)anim - 10) == 1)) {
+            p->variant = 1;
+            p->moveState |= MOVESTATE_SPIN_ATTACK;
+
+            PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
+        } else {
+            if ((p->qSpeedAirY > 0) && (p->variant == 1) && ((((u16)anim - 10) == 0) || (((u16)anim - 10) == 1))) {
+                s32 newY = sub_801E6D4(I(p->qWorldY) + p->spriteOffsetY, I(p->qWorldX), p->layer, 8, NULL, SA2_LABEL(sub_801EE64));
+
+                if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                    if (newY <= 32) {
+                        p->variant = 2;
+                    }
+                }
+            }
+        }
+    } else {
+        if (charState == CHARSTATE_SPRING_B) {
+            if (anim == SA2_CHAR_ANIM_52) {
+                if (variant == 0) {
+                    if (p->qSpeedAirY > 0) {
+                        p->variant = 1;
+                    }
+                } else if (p->variant == 1) {
+                    if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+                        p->variant = 2;
+                    }
+                }
+            }
+        }
+
+        else if (charState == CHARSTATE_SPRING_C) {
+            if (anim == SA2_CHAR_ANIM_53) {
+                if (sl == 0) {
+                    if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+#ifndef COLLECT_RINGS_ROM
+                        p->anim = (gPlayerCharacterIdleAnims[p->character] + SA2_CHAR_ANIM_52);
+#else
+                        p->anim = (gPlayerCharacterIdleAnims[0] + SA2_CHAR_ANIM_52);
+#endif
+                        p->variant = 2;
+                    }
+                }
+            }
+        }
+#ifndef COLLECT_RINGS_ROM
+        else if (charState == CHARSTATE_SPRING_MUSIC_PLANT) {
+            if (anim == SA2_CHAR_ANIM_SPRING_MUSIC_PLANT) {
+                if (variant == 0) {
+                    if (p->qSpeedAirY > 0) {
+                        p->variant = 1;
+                    }
+                } else if (variant == 1) {
+                    if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+                        p->variant = 2;
+                    }
+                }
+            }
+        } else if (charState == CHARSTATE_NOTE_BLOCK) {
+            if (anim == SA2_CHAR_ANIM_NOTE_BLOCK) {
+                if (variant == 0) {
+                    if (p->qSpeedAirY > 0) {
+                        p->variant = 1;
+                    }
+                } else if (sl == 1) {
+                    if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
+                        p->variant = 2;
+                    }
+                }
+            }
+        }
+#endif
+    }
+}
+#endif
+
+// ALIGNED UP TO HERE
+void SA2_LABEL(sub_802486C)(Player *p, PlayerSpriteInfo *psi)
 {
     s32 speed;
     Sprite *s = &psi->s;
@@ -5789,7 +5891,8 @@ NONMATCH("asm/non_matching/game/sa1/stage/Player__sa2__sub_802486C.inc", void SA
         } break;
 
         case 4: {
-            if (ABS(p->qSpeedGround) >= Q(4.5)) {
+            speed = p->qSpeedGround;
+            if (ABS(speed) >= Q(4.5)) {
                 p->anim = gPlayerCharacterIdleAnims[p->character] + 5;
                 p->variant = 0;
                 s->animSpeed = SPRITE_ANIM_SPEED(1.0);
@@ -5800,8 +5903,9 @@ NONMATCH("asm/non_matching/game/sa1/stage/Player__sa2__sub_802486C.inc", void SA
         case 24:
         case 25:
         case 26: {
-            s32 v = ABS(p->qSpeedGround) >> 4;
-            s->animSpeed = CLAMP_32(v, SPRITE_ANIM_SPEED(0.5), SPRITE_ANIM_SPEED(1.0));
+            speed = p->qSpeedGround;
+            speed = ABS(speed) >> 4;
+            s->animSpeed = CLAMP_32(speed, SPRITE_ANIM_SPEED(0.5), SPRITE_ANIM_SPEED(1.0));
         } break;
 
         case 21:
@@ -5881,7 +5985,6 @@ NONMATCH("asm/non_matching/game/sa1/stage/Player__sa2__sub_802486C.inc", void SA
 
     p->prevCharState = p->charState;
 }
-END_NONMATCH
 
 void SA2_LABEL(sub_8024B10)(Player *p, PlayerSpriteInfo *inPsi)
 {

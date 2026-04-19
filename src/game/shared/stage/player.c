@@ -208,24 +208,6 @@
 #else
 #define PLAYERFN_UPDATE_AIR_FALL_SPEED(player) player->qSpeedAirY += Q(PLAYER_GRAVITY);
 #endif
-
-#define PLAYERFN_SET_ANIM_SPEED(_p, _s)                                                                                                    \
-    {                                                                                                                                      \
-        s32 speed = _p->qSpeedGround;                                                                                                      \
-        speed = (speed >> 5) + (speed >> 6);                                                                                               \
-                                                                                                                                           \
-        /* TODO: Try ABS macro */                                                                                                          \
-        speed = ABS(speed);                                                                                                                \
-                                                                                                                                           \
-        if (speed >= SPRITE_ANIM_SPEED(0.5)) {                                                                                             \
-            if (speed > SPRITE_ANIM_SPEED(8.0)) {                                                                                          \
-                speed = SPRITE_ANIM_SPEED(8.0);                                                                                            \
-            }                                                                                                                              \
-        } else {                                                                                                                           \
-            speed = SPRITE_ANIM_SPEED(0.5);                                                                                                \
-        }                                                                                                                                  \
-        _s->animSpeed = speed;                                                                                                             \
-    }
 #endif
 
 #ifndef COLLECT_RINGS_ROM
@@ -5583,16 +5565,18 @@ void CallPlayerTransition(Player *p)
 }
 #endif
 
-// ALIGNED UP TO HERE
 // Confusion state related
 void Player_HandleInputs(Player *p)
 {
-    u32 input;
-    u16 input2;
+    u8 r0, r1, r2;
+    u16 input;
 
     if (IS_MULTI_PLAYER && (SIO_MULTI_CNT->id != gCamera.spectatorTarget)) {
         p->heldInput = 0;
         input = 0;
+#if (GAME == GAME_SA1)
+        sub_804D13C(0);
+#endif
     } else {
         input = p->heldInput;
 
@@ -5600,37 +5584,162 @@ void Player_HandleInputs(Player *p)
             p->heldInput = gInput;
 
             if (IS_MULTI_PLAYER && (p->itemEffect & PLAYER_ITEM_EFFECT__CONFUSION)) {
-                u8 dpad = (p->heldInput & DPAD_ANY) >> 4;
-                u32 r1 = gStageTime;
+                r2 = ((p->heldInput & DPAD_ANY) >> 4);
+                r1 = ((gStageTime + p->timerConfusion) & 0x3);
 
-                r1 = ((p->timerConfusion + r1) & 0x3);
-                if (!r1) {
+                if (r1 == 0) {
                     r1 = 1;
                 }
 
-                dpad <<= r1;
-                dpad = (dpad >> 4) | dpad;
-                dpad = (u8)(dpad << 4);
+                r2 <<= r1;
+                r0 = ((r2 >> 4) | r2);
+                r2 = r0 << 4;
 
-                p->heldInput = (p->heldInput & ~DPAD_ANY) | dpad;
-
+                p->heldInput = (p->heldInput & ~DPAD_ANY) | r2;
                 if (--p->timerConfusion == 0) {
                     p->itemEffect &= ~PLAYER_ITEM_EFFECT__CONFUSION;
                 }
             }
+#if (GAME == GAME_SA1)
+            sub_804D13C(p->heldInput);
+#endif
         }
+#if (GAME == GAME_SA1)
+        else {
+            sub_804D13C(0);
+        }
+#endif
     }
 
-    input2 = p->heldInput;
-    input ^= input2;
-#ifdef NON_MATCHING
-    input &= input2;
-#else
-    asm("and %0, %2" : "=r"(input) : "r"(input), "r"(input2));
-#endif
+    input ^= p->heldInput;
+    input &= p->heldInput;
     p->frameInput = input;
+#if (GAME == GAME_SA1)
+    if (p->heldInput & DPAD_SIDEWAYS) {
+        p->heldInput &= ~DPAD_VERTICAL;
+    }
+
+    if (p->frameInput & DPAD_SIDEWAYS) {
+        p->frameInput &= ~DPAD_VERTICAL;
+    }
+#endif
 }
 
+#if (GAME == GAME_SA1)
+// TODO: Remove gotos
+void sub_8045DF0(Player *p)
+{
+    u16 r4 = p->heldInput;
+    u16 r6 = r4;
+    u32 r5;
+
+    if (!(p->moveState & MOVESTATE_IGNORE_INPUT)) {
+        r4 = gUnknown_030060F0[20];
+
+        if (((p->rotation + Q(0.125)) & 0xC0) == 0) {
+            if ((p->qWorldX + Q(16)) < gPlayer.qWorldX) {
+
+                if (!(r4 & DPAD_DOWN)) {
+                    r4 |= DPAD_RIGHT;
+                    r4 &= ~DPAD_LEFT;
+                }
+
+            } else if ((p->qWorldX - Q(16)) > gPlayer.qWorldX) {
+                // _08045E48 + 0x8
+                if (!(r4 & DPAD_DOWN)) {
+                    r4 |= DPAD_LEFT;
+                    r4 &= ~DPAD_RIGHT;
+                }
+            } else {
+                r4 &= ~(DPAD_LEFT | DPAD_RIGHT);
+            }
+            // _08045E74
+
+            if (!(r4 & DPAD_SIDEWAYS) && (p->qSpeedGround == Q(0)) && !(p->moveState & MOVESTATE_IN_AIR) && (p->SA2_LABEL(unk62) == 0)
+                && ((p->charState == 4) || (p->charState == 0))
+                && !(p->moveState & (MOVESTATE_800000 | MOVESTATE_8000 | MOVESTATE_SPINDASH | MOVESTATE_200 | MOVESTATE_STOOD_ON_OBJ))) {
+                if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
+                    if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
+                        p->moveState |= MOVESTATE_FACING_LEFT;
+                        p->charState = CHARSTATE_8;
+                    }
+                } else {
+                    if (p->moveState & MOVESTATE_FACING_LEFT) {
+                        p->moveState &= ~MOVESTATE_FACING_LEFT;
+                        p->charState = CHARSTATE_8;
+                    }
+                }
+            }
+        }
+    }
+    // _08045EEE
+    r5 = r4;
+    r5 &= ~r6;
+
+    if (!(p->moveState & MOVESTATE_IGNORE_INPUT)) {
+        switch (p->moveState & MOVESTATE_IN_AIR) {
+            case 0: {
+                if (!GRAVITY_IS_INVERTED) {
+                    if (p->qWorldY - Q(80) > gPlayer.qWorldY) {
+                        goto _08045FC6;
+                    }
+                } else {
+                    // _08045F38
+                    if (p->qWorldY + Q(80) < gPlayer.qWorldY) {
+                        r5 |= gPlayerControls.jump;
+                    }
+                }
+            } break;
+
+            case MOVESTATE_IN_AIR: {
+                if (!GRAVITY_IS_INVERTED) {
+                    if (p->qWorldY > gPlayer.qWorldY - Q(16)) {
+                        goto _08045F90;
+                    }
+                } else {
+                    // _08045F7C
+                    if (p->qWorldY < gPlayer.qWorldY + Q(16)) {
+                    _08045F90:
+                        if ((p->SA2_LABEL(unk61) != 0) || (p->qSpeedAirY > Q(0))) {
+                            // _08045FA8
+                            if (!GRAVITY_IS_INVERTED) {
+                                if (p->qWorldY > gPlayer.qWorldY) {
+                                    goto _08045FC6;
+                                }
+                            } else {
+                                // _08045FC0
+                                if (p->qWorldY < gPlayer.qWorldY) {
+                                _08045FC6:
+                                    r5 |= gPlayerControls.jump;
+                                }
+                            }
+                        } else {
+                            r4 |= gPlayerControls.jump;
+                        }
+                    }
+                }
+            } break;
+        }
+    }
+    // _08045FDA
+
+    if (r4 & DPAD_SIDEWAYS) {
+        r4 &= ~DPAD_VERTICAL;
+    }
+    // _08045FE8
+
+    if (r5 & DPAD_SIDEWAYS) {
+        u16 mask = ~DPAD_VERTICAL;
+        r5 &= mask;
+    }
+
+    // _08045FF4
+    p->heldInput = r4;
+    p->frameInput = r5;
+}
+#endif
+
+#if (GAME == GAME_SA2)
 void sub_80246DC(Player *p)
 {
     Sprite *s = &p->spriteInfoBody->s;
@@ -5725,13 +5834,12 @@ void sub_80246DC(Player *p)
 #endif
     }
 }
+#endif
 
+// ALIGNED UP TO HERE
 void SA2_LABEL(sub_802486C)(Player *p, PlayerSpriteInfo *p2)
 {
-#ifndef NON_MATCHING
     s32 speed;
-    register s32 r0 asm("r0");
-#endif
     Sprite *s = &p2->s;
 
     if ((p->charState != CHARSTATE_INVALID) && (p->charState != p->prevCharState)) {
@@ -5747,12 +5855,8 @@ void SA2_LABEL(sub_802486C)(Player *p, PlayerSpriteInfo *p2)
         p->variant = sCharStateAnimInfo[p->charState][1];
         p2->s.animSpeed = SPRITE_ANIM_SPEED(1.0);
     }
-#if !defined(NON_MATCHING) && !defined(COLLECT_RINGS_ROM)
-    switch (((u16)(p->charState - 9) << 16) >> 16) {
-#else
-    switch (p->charState - 9) {
-#endif
-        case CHARSTATE_WALK_A - 9: {
+    switch (p->charState) {
+        case CHARSTATE_WALK_A: {
 #ifndef COLLECT_RINGS_ROM
             p->anim = gPlayerCharacterIdleAnims[p->character] + SA2_CHAR_ANIM_WALK;
 #else
@@ -5761,58 +5865,41 @@ void SA2_LABEL(sub_802486C)(Player *p, PlayerSpriteInfo *p2)
             p->variant = p->walkAnim;
         } // FALLTHROUGH!!!
 #ifndef COLLECT_RINGS_ROM
-        case CHARSTATE_WALLRUN_INIT - 9:
-        case CHARSTATE_WALLRUN_TO_WALL - 9:
-        case CHARSTATE_WALLRUN_ON_WALL
-            - 9:
+        case CHARSTATE_WALLRUN_INIT:
+        case CHARSTATE_WALLRUN_TO_WALL:
+        case CHARSTATE_WALLRUN_ON_WALL:
 #endif
         {
-            PLAYERFN_SET_ANIM_SPEED(p, s);
+            speed = p->qSpeedGround;
+            speed = (speed >> 5) + (speed >> 6);
+            speed = ABS(speed);
+            s->animSpeed = CLAMP_32(speed, SPRITE_ANIM_SPEED(0.5), SPRITE_ANIM_SPEED(8.0));
         } break;
 #ifndef COLLECT_RINGS_ROM
-        case CHARSTATE_AIR_ATTACK - 9: {
+        case CHARSTATE_AIR_ATTACK: {
             if (p->character != CHARACTER_CREAM) {
                 break;
             }
-#ifndef NON_MATCHING
             speed = p->qSpeedGround;
             speed = (speed >> 5) + (speed >> 6);
-
             speed = ABS(speed);
-
-            if (speed >= SPRITE_ANIM_SPEED(0.5)) {
-                if (speed > SPRITE_ANIM_SPEED(8.0)) {
-                    speed = SPRITE_ANIM_SPEED(8.0);
-                }
-            } else {
-                speed = SPRITE_ANIM_SPEED(0.5);
-            }
-            s->animSpeed = speed;
-#else
-            PLAYERFN_SET_ANIM_SPEED(p, s);
-#endif
+            s->animSpeed = CLAMP_32(speed, SPRITE_ANIM_SPEED(0.5), SPRITE_ANIM_SPEED(8.0));
         } break;
 
-        case CHARSTATE_WINDUP_STICK_UPWARDS - 9:
-        case CHARSTATE_WINDUP_STICK_DOWNWARDS - 9: {
-#ifndef NON_MATCHING
-            r0 = p->qSpeedAirY;
-            goto lab;
-#else
-            s->animSpeed = I(ABS(p->qSpeedAirY)) * 3 + 8;
-#endif
+        case CHARSTATE_WINDUP_STICK_UPWARDS:
+        case CHARSTATE_WINDUP_STICK_DOWNWARDS: {
+            speed = p->qSpeedAirY;
+            speed = ABS(speed);
+            speed = I(speed) * 3 + 8;
+            s->animSpeed = speed;
         } break;
 
-        case CHARSTATE_WINDUP_STICK_SINGLE_TURN_UP - 9:
-        case CHARSTATE_WINDUP_STICK_SINGLE_TURN_DOWN - 9: {
-#ifndef NON_MATCHING
-            r0 = p->qSpeedGround;
-        lab:
-            speed = I(ABS(r0)) * 3 + 8;
+        case CHARSTATE_WINDUP_STICK_SINGLE_TURN_UP:
+        case CHARSTATE_WINDUP_STICK_SINGLE_TURN_DOWN: {
+            speed = p->qSpeedGround;
+            speed = ABS(speed);
+            speed = I(speed) * 3 + 8;
             s->animSpeed = speed;
-#else
-            s->animSpeed = I(ABS(p->qSpeedGround)) * 3 + 8;
-#endif
         } break;
 #endif
     }
